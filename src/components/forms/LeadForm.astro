@@ -1,0 +1,587 @@
+---
+interface FieldOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+  selected?: boolean;
+}
+
+interface Field {
+  name: string;
+  type: 'text' | 'email' | 'tel' | 'number' | 'select' | 'textarea' | 'hidden' | 'radio';
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  full?: boolean;
+  id?: string;
+  autocomplete?: string;
+  errorText?: string;
+  errorId?: string;
+  maxlength?: number;
+  minlength?: number;
+  pattern?: string;
+  min?: string;
+  max?: string;
+  readonly?: boolean;
+  rows?: number;
+  options?: FieldOption[];
+  value?: string;
+  datepicker?: boolean;
+  /** Texto de apoio exibido logo após o campo (ex.: "Não obrigatório") */
+  hint?: string;
+}
+
+interface FieldRow {
+  type: 'row';
+  fields: Field[];
+}
+
+type AnyField = Field | FieldRow;
+
+interface Props {
+  formId: string;
+  project: string;
+  fonte?: string;
+  submitUrl?: string;
+  redirectUrl?: string;
+  submitText?: string;
+  fields?: AnyField[];
+  class?: string;
+  prefix?: string;
+  gridId?: string;
+  submitId?: string;
+  honeypot?: boolean;
+  successTitle?: string;
+  successText?: string;
+}
+
+const {
+  formId,
+  project,
+  fonte,
+  submitUrl,
+  redirectUrl,
+  submitText = 'Enviar',
+  fields = [
+    { name: 'nome',     type: 'text',  placeholder: 'Nome completo', required: true },
+    { name: 'telefone', type: 'text',  placeholder: 'WhatsApp',      required: true },
+    { name: 'email',    type: 'email', placeholder: 'E-mail',        required: true },
+  ] as AnyField[],
+  class: className,
+  prefix = '',
+  gridId,
+  submitId,
+  honeypot = true,
+  successTitle = 'Solicitação recebida',
+  successText = 'Recebemos seu pedido.<br>Em breve entraremos em contato pelo WhatsApp ou e-mail.',
+} = Astro.props;
+
+const formElemId = `form-${formId}`;
+const theGridId = gridId || (prefix ? `${prefix}FormGrid` : `${formId}Grid`);
+const theSubmitId = submitId || (prefix ? `${prefix}SubmitBtn` : `${formId}SubmitBtn`);
+const theSuccessId = prefix ? `${prefix}Success` : `${formId}Success`;
+const theMsgId = prefix ? `${prefix}FormMsg` : `${formId}FormMsg`;
+
+const p = prefix ? prefix : null;
+const cxGrid    = p ? `${p}-form-grid`    : 'lead-form-grid';
+const cxRow     = p ? `${p}-form-row`     : 'form-row';
+const cxLabel   = p ? `${p}-label`        : 'form-label';
+const cxInput   = p ? `${p}-input`        : 'form-input';
+const cxSelect  = p ? `${p}-select`       : 'form-select';
+const cxArea    = p ? `${p}-textarea`     : 'form-textarea';
+const cxError   = p ? `${p}-field-error`  : 'field-error';
+const cxHint    = p ? `${p}-form-hint`     : 'form-hint';
+const cxMsg     = p ? `${p}-form-msg`     : 'form-error';
+const cxFooter  = p ? `${p}-form-footer`  : 'form-footer';
+const cxSuccess      = p ? `${p}-success-state`  : 'form-success-state';
+const cxRadioGroup   = p ? `${p}-radio-group`    : 'form-radio-group';
+const cxRadioLabel   = p ? `${p}-radio-label`    : 'form-radio-label';
+const cxSIcon   = p ? `${p}-success-icon`   : 'form-success-icon';
+const cxSTitle  = p ? `${p}-success-title`  : 'form-success-title';
+const cxSText   = p ? `${p}-success-text`   : 'form-success-text';
+const cxSubmit  = p ? `${p}-submit form-submit` : 'btn btn-primary form-submit';
+const groupCls  = (full?: boolean) => {
+  const base = p ? `${p}-form-group` : 'form-group';
+  return full ? `${base} full` : base;
+};
+---
+
+<form
+  id={formElemId}
+  name={formId}
+  class:list={[!prefix && 'lead-form', className]}
+  data-form-id={formId}
+  data-project={project}
+  data-fonte={fonte}
+  data-submit-url={submitUrl}
+  data-redirect={redirectUrl}
+  data-grid-id={theGridId}
+  data-success-id={theSuccessId}
+  novalidate
+>
+  {fonte && <input type="hidden" name="fonte" value={fonte} />}
+  {honeypot && (
+    <div class="hp-field" aria-hidden="true">
+      <label for={`${formId}_website`}>Deixe este campo em branco</label>
+      <input type="text" id={`${formId}_website`} name="website" tabindex="-1" autocomplete="off" />
+    </div>
+  )}
+
+  <div class={cxGrid} id={theGridId}>
+    {fields.map((fieldOrRow) => {
+      if (fieldOrRow.type === 'row') {
+        const row = fieldOrRow as FieldRow;
+        return (
+          <div class={cxRow}>
+            {row.fields.map((f) => (
+              <div class={groupCls(f.full)}>
+                {f.label && <label class={cxLabel} for={f.id ?? f.name}>{f.label}{f.hint && <span class={cxHint}> (*{f.hint})</span>}</label>}
+                {f.type === 'select' ? (
+                  <select class={cxSelect} name={f.name} id={f.id ?? f.name} required={f.required}>
+                    {f.options?.map((opt) => (
+                      <option value={opt.value} disabled={opt.disabled} selected={opt.selected}>{opt.label}</option>
+                    ))}
+                  </select>
+                ) : f.type === 'textarea' ? (
+                  <textarea class={cxArea} name={f.name} id={f.id ?? f.name} rows={f.rows ?? 4} placeholder={f.placeholder} required={f.required}></textarea>
+                ) : f.type === 'hidden' ? (
+                  <input type="hidden" name={f.name} id={f.id ?? f.name} value={f.value} />
+                ) : f.type === 'radio' ? (
+                  <div class={cxRadioGroup}>
+                    {f.options?.map((opt) => (
+                      <label class={cxRadioLabel}>
+                        <input type="radio" name={f.name} value={opt.value} required={f.required} />
+                        <span>{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : f.datepicker ? (
+                  <div class="form-datepicker-wrap">
+                    <input
+                      class={cxInput}
+                      type={f.type}
+                      name={f.name}
+                      id={f.id ?? f.name}
+                      placeholder={f.placeholder}
+                      required={f.required}
+                      autocomplete="off"
+                      readonly={f.readonly}
+                      data-flatpickr="true"
+                    />
+                    <svg class="form-datepicker-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                  </div>
+                ) : (
+                  <input
+                    class={cxInput}
+                    type={f.type}
+                    name={f.name}
+                    id={f.id ?? f.name}
+                    placeholder={f.placeholder}
+                    required={f.required}
+                    autocomplete={f.autocomplete}
+                    maxlength={f.maxlength}
+                    minlength={f.minlength}
+                    pattern={f.pattern}
+                    min={f.min}
+                    max={f.max}
+                    readonly={f.readonly}
+                  />
+                )}
+                {f.errorText && <span class={cxError} id={f.errorId}>{f.errorText}</span>}
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      const f = fieldOrRow as Field;
+
+      if (f.type === 'hidden') {
+        return <input type="hidden" name={f.name} id={f.id ?? f.name} value={f.value} />;
+      }
+
+      return (
+        <div class={groupCls(f.full)}>
+          {f.label && <label class={cxLabel} for={f.id ?? f.name}>{f.label}{f.hint && <span class={cxHint}> (*{f.hint})</span>}</label>}
+          {f.type === 'select' ? (
+            <select class={cxSelect} name={f.name} id={f.id ?? f.name} required={f.required}>
+              {f.options?.map((opt) => (
+                <option value={opt.value} disabled={opt.disabled} selected={opt.selected}>{opt.label}</option>
+              ))}
+            </select>
+          ) : f.type === 'textarea' ? (
+            <textarea class={cxArea} name={f.name} id={f.id ?? f.name} rows={f.rows ?? 4} placeholder={f.placeholder} required={f.required}></textarea>
+          ) : f.type === 'radio' ? (
+            <div class={cxRadioGroup}>
+              {f.options?.map((opt) => (
+                <label class={cxRadioLabel}>
+                  <input type="radio" name={f.name} value={opt.value} required={f.required} />
+                  <span>{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          ) : f.datepicker ? (
+            <div class="form-datepicker-wrap">
+              <input
+                class={cxInput}
+                type={f.type}
+                name={f.name}
+                id={f.id ?? f.name}
+                placeholder={f.placeholder}
+                required={f.required}
+                autocomplete="off"
+                readonly={f.readonly}
+                data-flatpickr="true"
+              />
+              <svg class="form-datepicker-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+          ) : (
+            <input
+              class={cxInput}
+              type={f.type}
+              name={f.name}
+              id={f.id ?? f.name}
+              placeholder={f.placeholder}
+              required={f.required}
+              autocomplete={f.autocomplete}
+              maxlength={f.maxlength}
+              minlength={f.minlength}
+              pattern={f.pattern}
+              min={f.min}
+              max={f.max}
+              readonly={f.readonly}
+            />
+          )}
+          {f.errorText && <span class={cxError} id={f.errorId}>{f.errorText}</span>}
+        </div>
+      );
+    })}
+
+    <div class={groupCls(true)}>
+      <button type="button" class={cxSubmit} id={theSubmitId}>
+        <span class="btn-text">{submitText}</span>
+        <span class="btn-loading" style="display:none;">
+          <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg>
+          Enviando...
+        </span>
+      </button>
+    </div>
+
+    <div class={cxMsg} id={theMsgId}></div>
+    <p class={cxFooter}>Ao enviar, você concorda com nossa <a href="/politica-de-privacidade/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">política de privacidade</a>.</p>
+  </div>
+
+  <div class={cxSuccess} id={theSuccessId}>
+    <div class={cxSIcon}>
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+    </div>
+    <h3 class={cxSTitle}>{successTitle}</h3>
+    <p class={cxSText} set:html={successText}></p>
+  </div>
+</form>
+
+<script>
+  import { initForms } from '../../scripts/forms.ts';
+  import flatpickr from 'flatpickr';
+  import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
+  import 'flatpickr/dist/flatpickr.min.css';
+
+  function applyDateMask(el) {
+    el.addEventListener('input', () => {
+      let v = el.value.replace(/\D/g, '');
+      if (v.length > 8) v = v.slice(0, 8);
+      if (v.length > 4) {
+        v = `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
+      } else if (v.length > 2) {
+        v = `${v.slice(0, 2)}/${v.slice(2)}`;
+      }
+      el.value = v;
+    });
+  }
+
+  function initDatepickers() {
+    document.querySelectorAll('[data-flatpickr]').forEach((el) => {
+      if (el.dataset.flatpickrReady) return;
+      el.dataset.flatpickrReady = 'true';
+
+      // captura o ícone antes de inicializar: o modo `static` do Flatpickr
+      // move o input para dentro de um novo wrapper próprio, então depois
+      // disso `el.parentElement` deixa de ser o `.form-datepicker-wrap`
+      const icon = el.parentElement?.querySelector('.form-datepicker-icon');
+
+      applyDateMask(el);
+
+      const fp = flatpickr(el, {
+        locale: Portuguese,
+        dateFormat: 'd/m/Y',
+        minDate: 'today',
+        disableMobile: true,
+        allowInput: true,
+        static: true,
+      });
+
+      icon?.addEventListener('click', () => fp.open());
+    });
+  }
+
+  function init() {
+    initForms();
+    initDatepickers();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  /* ── Honeypot ─────────────────────────────────────── */
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Layout base ──────────────────────────────────── */
+  .lead-form {
+    width: 100%;
+  }
+
+  /* grid de campos (usa classes globais .fgrid/.field do index.css) */
+  .lead-form-grid {
+    display: grid;
+    gap: 22px;
+    margin-top: 46px;
+  }
+
+  /* linha 2 colunas */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  /* campo individual — idêntico ao .field do index.css */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* label — idêntico ao .field label do index.css */
+  .form-label {
+    font-family: 'Aktiv Grotesk', sans-serif;
+    font-size: .74rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* input/select/textarea — idêntico ao .field input do index.css */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 11px 2px;
+    font-family: 'Aktiv Grotesk', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 400;
+    transition: border-color .4s;
+    width: 100%;
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: 0;
+    border-color: var(--sand);
+  }
+
+  /* ── Campo com Flatpickr (ícone de calendário) ───────── */
+  .form-datepicker-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  /* o Flatpickr (modo static) embrulha o input num .flatpickr-wrapper
+     com display:inline-block, o que o encolhe para a largura do texto;
+     forçamos ele a ocupar 100% para o ícone alinhar com o fim do campo */
+  .form-datepicker-wrap :global(.flatpickr-wrapper) {
+    display: block;
+    width: 100%;
+  }
+
+  .form-datepicker-wrap .form-input {
+    padding-right: 26px;
+    cursor: pointer;
+  }
+
+  .form-datepicker-icon {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    opacity: .6;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: color .3s, opacity .3s;
+  }
+
+  .form-datepicker-wrap:focus-within .form-datepicker-icon,
+  .form-datepicker-icon:hover {
+    color: var(--sand);
+    opacity: 1;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: var(--ink-soft);
+    opacity: .5;
+  }
+
+  /* aviso de apoio inline no label (ex.: "(*não obrigatório)") */
+  .form-hint {
+    font-family: 'Aktiv Grotesk', sans-serif;
+    text-transform: none;   /* mantém minúsculo mesmo com o label em uppercase */
+    letter-spacing: 0;
+    font-weight: 400;
+    font-size: .72rem;
+    color: var(--ink-soft);
+    opacity: .7;
+  }
+
+  /* erro de campo */
+  .field-error {
+    font-size: .78rem;
+    color: #ef4444;
+    display: none;
+  }
+  .field-error.visible { display: block; }
+
+  /* botão submit */
+  .form-submit {
+    justify-self: center;
+    margin-top: 14px;
+    cursor: pointer;
+  }
+  .form-submit:disabled { opacity: .7; cursor: not-allowed; }
+
+  /* spinner de carregamento */
+  .btn-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .spinner { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* mensagem de erro global */
+  .form-error {
+    color: #ef4444;
+    font-size: .875rem;
+    margin-top: 4px;
+    display: none;
+  }
+
+  /* nota de privacidade */
+  .form-footer {
+    font-size: .75rem;
+    color: var(--ink-soft);
+    text-align: center;
+    opacity: .6;
+  }
+
+  /* ── Estado de sucesso (usa .form-success do index.css) ── */
+  .form-success-state {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    color: var(--sand-deep);
+    animation: fade .6s;
+  }
+  .form-success-state.active { display: block; }
+
+  .form-success-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    background: var(--sand);
+    border-radius: 50%;
+    color: white;
+  }
+  .form-success-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .form-success-title {
+    font-family: 'PP Editorial New', serif;
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .form-success-text {
+    font-family: 'Aktiv Grotesk', sans-serif;
+    color: var(--ink-soft);
+    font-size: .9rem;
+  }
+
+  /* radio */
+  .form-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .form-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: .95rem;
+    color: var(--ink);
+  }
+  .form-radio-label input[type="radio"] {
+    accent-color: var(--sand);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>

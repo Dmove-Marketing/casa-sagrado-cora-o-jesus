@@ -1,0 +1,50 @@
+---
+---
+
+<script>
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+
+    const utmKeys = [
+      'utm_source', 'utm_medium', 'utm_campaign',
+      'utm_content', 'utm_term'
+    ];
+
+    const clickIdKeys = ['gclid', 'fbclid', 'sck', 'ttclid', 'msclkid'];
+
+    const trackingData: Record<string, string> = {};
+
+    utmKeys.forEach(key => {
+      const value = params.get(key);
+      if (value) trackingData[key] = value;
+    });
+
+    clickIdKeys.forEach(key => {
+      const value = params.get(key);
+      if (value) trackingData[key] = value;
+    });
+
+    if (document.referrer && !document.referrer.includes(window.location.hostname)) {
+      trackingData['referrer'] = document.referrer;
+    }
+
+    trackingData['landing_page'] = window.location.pathname;
+    trackingData['landing_url'] = window.location.href.split('?')[0];
+
+    if (!sessionStorage.getItem('dmove_first_visit')) {
+      sessionStorage.setItem('dmove_first_visit', new Date().toISOString());
+    }
+
+    const hasNewParams = utmKeys.some(k => trackingData[k]) || clickIdKeys.some(k => trackingData[k]);
+    if (hasNewParams) {
+      sessionStorage.setItem('dmove_tracking', JSON.stringify(trackingData));
+    }
+
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: 'page_meta',
+      page_path: window.location.pathname,
+      ...trackingData
+    });
+  })();
+</script>

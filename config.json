@@ -1,0 +1,40 @@
+{
+  "project_name": "PREENCHER — Nome do projeto",
+  "project_slug": "preencher-slug",
+  "domain": "eventos.cliente.com.br",
+  "client": "PREENCHER — Cliente",
+  "environment": "development",
+  "tracking": {
+    "gtm_id": "GTM-XXXXXXX",
+    "enabled": true
+  },
+  "whatsapp": {
+    "phone": "5511900000000",
+    "display_name": "PREENCHER — Cliente",
+    "avatar": "/images/whatsapp-avatar.jpg",
+    "enabled": true
+  },
+  "forms": {
+    "lead-form": {
+      "id": "lead-form",
+      "preset": "social",
+      "redirect_on_success": "",
+      "webhooks": [
+        "https://server3n8n.dmove.com.br/webhook/preencher-slug"
+      ]
+    }
+  },
+  "media": {
+    "cdn_base": "https://media.dmove.com.br/clients/preencher-slug"
+  },
+  "deploy": {
+    "user": "root",
+    "server": "157.173.197.116",
+    "remote_path": "/var/www/eventos.cliente.com.br"
+  },
+  "meta": {
+    "created_at": "",
+    "last_updated": "",
+    "owner": "Dmove"
+  }
+}
