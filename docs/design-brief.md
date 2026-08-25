@@ -44,9 +44,9 @@ Mesma lógica das imagens. Um vídeo em base64 deixou um HTML com **26 MB**. Ent
 No `<style>`, defina a paleta e as fontes como CSS variables. Isso já vem sendo feito bem — mantenha.
 ```css
 :root {
-  --cor-primaria: #5a1e2c;
-  --cor-fundo: #fbf8f4;
-  --fonte-titulo: "Clarity City", sans-serif;
+  --cor-primaria: #1a73e8;   /* cor principal da marca */
+  --cor-fundo: #ffffff;      /* fundo da página */
+  --fonte-titulo: "Nome da Fonte", sans-serif;
 }
 ```
 

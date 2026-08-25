@@ -1,5 +1,5 @@
 // Mapeamento normalizado para o padrão exato de chaves do n8n.
-// Compartilhado entre forms.ts (LeadForm) e WhatsAppWidget para que
+// Compartilhado entre forms.ts (formulário da página) e WhatsAppWidget para que
 // todo formulário do site envie os mesmos nomes de campo ao webhook.
 export const keyMap: Record<string, string> = {
   nome: 'Nome',
@@ -20,7 +20,7 @@ export const keyMap: Record<string, string> = {
 };
 
 // Opções de "Tipo de evento" — fonte única compartilhada entre os formulários
-// normais (LeadForm) e o popup de WhatsApp, para que todos ofereçam
+// normais (formulário da página) e o popup de WhatsApp, para que todos ofereçam
 // exatamente a mesma lista. Não inclui o placeholder "Selecione...".
 export const tipoEventoOptions: { value: string; label: string }[] = [
   { value: 'Aniversario',                          label: 'Aniversário' },

@@ -14,10 +14,10 @@ interface Props {
 
 const {
   phone = config.whatsapp?.phone || '5511917299858',
-  displayName = config.whatsapp?.display_name || 'Casa Rofer',
+  displayName = config.whatsapp?.display_name || 'Atendimento',
   avatar = config.whatsapp?.avatar || '/images/whatsapp-avatar.jpg',
   submitUrl = config.forms['lead-form']?.webhooks[0] || '',
-  project = config.project_slug || 'casa-rofer',
+  project = config.project_slug || 'landing-page',
   showEmpresaField = false,
 } = Astro.props;
 
@@ -67,7 +67,7 @@ const introMessages = [
   </button>
 
   <!-- Popup chat -->
-  <div id="wa-popup" class="wa-popup" role="dialog" aria-modal="true" aria-label="Chat WhatsApp Casa Rofer" hidden>
+  <div id="wa-popup" class="wa-popup" role="dialog" aria-modal="true" aria-label="Chat WhatsApp" hidden>
 
     <!-- Header -->
     <div class="wa-header">

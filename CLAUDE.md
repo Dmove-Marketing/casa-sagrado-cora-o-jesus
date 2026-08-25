@@ -58,7 +58,7 @@ Se o preview vier com base64 (comum), use `tools/`:
 
 1. **`node tools/extract-preview.mjs <arquivo.html>`** — separa `<style>`/`<body>`, troca cada mídia base64 por placeholder `__IMAGE_n__`/`__VIDEO_n__`/`__FONT_n__` e gera manifesto em `_work/`. Reduz um HTML de dezenas de MB a ~KB legíveis.
 2. **Mapeie cada placeholder → URL do CDN** pelo contexto/`alt` de cada imagem.
-3. Escreva um `tools/build-page.mjs` **por projeto** (aplica o mapa, faz o wiring do form, monta `src/pages/<slug>.astro` + CSS scoped). Use o de referência descrito abaixo.
+3. Escreva um `tools/build-page.mjs` **por projeto** (aplica o mapa placeholder→CDN, faz o wiring do form, extrai o `<style>` para CSS scoped e monta `src/pages/<slug>.astro`).
 4. Imagens do CDN entram como `<img>` normal (já otimizadas). Hero = LCP → `fetchpriority="high"`.
 5. Extraia as interações do design (`<script>`) para `src/scripts/<slug>.js` (menos a lógica de form).
 
