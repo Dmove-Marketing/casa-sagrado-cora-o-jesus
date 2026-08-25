@@ -40,6 +40,8 @@ Pergunte **tudo de uma vez**, mesmo sem DNS pronto (desenvolve-se local e ativa 
 
 ---
 
+> **Cliente com mais de um funil?** A raiz `/` vira uma **home de triagem** (roteia por tipo de evento). Ver `docs/home-triagem.md`. Use `<Base hideWhatsApp={true}>` na home.
+
 ## FASE 1 — Setup
 
 - Preencha o `config.json`: `project_name`, `project_slug`, `domain`, `client`, `tracking.gtm_id`, `whatsapp.*`, `forms.lead-form.webhooks[0]`, `forms.lead-form.preset`, `deploy.remote_path` (`/var/www/<dominio>`).

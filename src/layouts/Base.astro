@@ -33,6 +33,8 @@ interface Props {
   whatsAppMessage?: string;
   /** Exibe o campo "Empresa" como primeiro campo da etapa 1 do popup WhatsApp */
   whatsAppShowEmpresaField?: boolean;
+  /** Oculta o widget de WhatsApp (ex.: home de triagem, que só roteia) */
+  hideWhatsApp?: boolean;
 }
 
 const {
@@ -46,6 +48,7 @@ const {
   whatsAppStep1Fields,
   whatsAppMessage,
   whatsAppShowEmpresaField = false,
+  hideWhatsApp = false,
 } = Astro.props;
 
 import config from '../../config.json';
@@ -115,7 +118,7 @@ const defaultJsonLd = {
     <slot />
 
     <!-- WhatsApp Flutuante — configurar em config.json > whatsapp -->
-    <WhatsAppWidget showEmpresaField={whatsAppShowEmpresaField} />
+    {!hideWhatsApp && <WhatsAppWidget showEmpresaField={whatsAppShowEmpresaField} />}
 
     <!-- Scripts adicionais -->
     <slot name="scripts" />
