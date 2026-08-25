@@ -407,7 +407,14 @@ const introMessages = [
     } catch (_) { /* falha silenciosa */ }
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'form_submit', project: project, ...payload });
+    window.dataLayer.push({
+      event: 'form_submit',
+      form_source: 'whatsapp',
+      form_id: 'form_whatsapp',
+      project: project,
+      tipo_evento: a.tipo_evento?.value || '',
+      event_id: tracking['event_id'] || window.__page_event_id || '',
+    });
   }
 
   let convoStarted = false;
@@ -431,7 +438,7 @@ const introMessages = [
 
     if (state.idx === 0) {
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'form_start', project: project, form_id: 'form_whatsapp', form_name: 'form_whatsapp' });
+      window.dataLayer.push({ event: 'form_start', form_source: 'whatsapp', project: project, form_id: 'form_whatsapp', form_name: 'form_whatsapp' });
       // repete a intro "ao vivo": remove o replay e digita de verdade
       chat.innerHTML = '';
       for (const m of introMessages) await agentSays(m);

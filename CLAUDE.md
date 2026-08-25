@@ -74,6 +74,7 @@ Use o preset: `getPreset(config.forms['lead-form'].preset)` de `src/scripts/form
 - `detalhes_adicionais` = "Detalhes do evento (não obrigatório)" — **único opcional**
 - Corporativo → `empresa` ("Nome da empresa") como **1º campo**
 - Ligue o `<form>` ao `forms.ts` via `data-form-id`, `data-submit-url`, `data-grid-id`, `data-success-id` + honeypot `name="website"`.
+- **`id` de cada campo = `form-field-<name>`** (ex.: `id="form-field-telefone"`). O GTM lê e-mail/telefone/nome do DOM por esses IDs (Enhanced Conversions). O `<label for>` acompanha. **Sem isso, telefone e nome não são capturados nas conversões.**
 
 **Nomes canônicos (batem com o keyMap do n8n):** `nome, telefone, email, tipo_evento, data_evento, convidados, empresa, detalhes_adicionais`.
 
@@ -85,6 +86,17 @@ O `global.css` usa `--font-display`/`--font-body` (default de sistema). Para a f
 - O `WhatsAppWidget` já usa `font-family: inherit` (herda a fonte da página).
 - **Verifique com auditoria de computed style** (Playwright), não só lendo CSS.
 
+## Tracking / GTM — contrato obrigatório com o container padrão
+
+O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o site não os produz, as conversões chegam vazias. O `UTMCapture.astro` e o `forms.ts` deste template já cumprem o contrato — **não regride isso**. Detalhes em `docs/tracking-gtm.md`. Resumo:
+
+- **UTMs em COOKIES** — `UTMCapture` grava `utm_source/medium/campaign/content/term` + click IDs como cookies 1st-party (90d). O GTM lê de cookie, não de dataLayer. (Também resolve a persistência: sobrevive a fechar aba/voltar depois.)
+- **`_external_id`** — cookie 1st-party (UUID, 365d) para Enhanced Conversions/CAPI.
+- **`window.__page_event_id`** — UUID por pageview; o GTM usa como `event_id` do Pixel e o site manda o MESMO id no webhook → dedup Pixel×CAPI.
+- **PII pelo DOM** — o GTM lê e-mail/telefone/nome dos campos `#form-field-*` (ver Fase 4). **Não** mande PII no dataLayer.
+- **`form_submit`** (form e WhatsApp) dispara as conversões — payload limpo: `{ event, form_source: 'form'|'whatsapp', form_id, tipo_evento, event_id }`. Idem `form_start`/`form_error`.
+- Container de referência: `Clientes/a' Playbooks e Metodologia/GTM-PKJ6HVMP_workspace20.json`.
+
 ## FASE 6 — QA (com evidência)
 
 - **Fontes:** percorra os elementos e cheque `getComputedStyle().fontFamily` — nenhum fora da fonte do design.
@@ -92,6 +104,7 @@ O `global.css` usa `--font-display`/`--font-body` (default de sistema). Para a f
 - **VRT:** `npm run compare` compara contra o HTML do design (baseline greenfield).
 - **Lighthouse:** `npm run audit`. + checar links quebrados.
 - **Form:** confira o wiring; só dispare **lead de teste real no n8n com o OK do usuário**.
+- **Tracking:** valide em runtime (ver `docs/tracking-gtm.md`) — cookies `utm_*`/`_external_id`, `window.__page_event_id` e os seletores `#form-field-*` (replicando os cJS do container). Depois o cliente valida no GTM Preview/Tag Assistant.
 
 ## FASE 7 — Deploy na VPS
 

@@ -70,8 +70,47 @@ Monte a home como uma página curta:
 
 ## Para a IA (implementação)
 
-- A home é `src/pages/index.astro`, usando `<Base ... hideWhatsApp={true}>`.
+- A home é `src/pages/index.astro`, usando `<Base ... hideWhatsApp={true}>` (o template já aceita a prop).
 - Os cards linkam para os slugs padrão dos funis existentes no projeto.
-- Adicione um evento de dataLayer no clique de cada card (qual funil foi escolhido).
+- Adicione um evento de dataLayer no clique de cada card (`escolha_funil`).
 - Quando a home passar a existir, **remova o redirect temporário** `/` → `/<funil>` do `astro.config.mjs`.
-- **Pré-requisito no template:** o `Base.astro` precisa aceitar a prop `hideWhatsApp` (renderizar o `WhatsAppWidget` só quando `!hideWhatsApp`). Se ainda não aceitar, adicione — é uma melhoria de template, não por projeto.
+
+## Implementação de referência (validada no Casa Kefren)
+
+**Frontmatter** — cards data-driven; funis sem LP ainda vão pro WhatsApp:
+```js
+const CDN = config.media.cdn_base + '/photos';
+const wa = (msg) => `https://wa.me/${config.whatsapp.phone}?text=${encodeURIComponent(msg)}`;
+const cards = [
+  { funil: 'casamento',   label: 'Casamento',   img: `${CDN}/card-casamento.webp`,
+    href: wa('Olá! Gostaria de um orçamento para um casamento na <Cliente>.'), external: true },
+  { funil: 'corporativo', label: 'Corporativo', img: `${CDN}/card-corporativo.webp`,
+    href: '/eventos-corporativos', external: false },
+];
+```
+
+**Corpo** — cada card é um `<a>` com `data-funil`; script mede o clique:
+```astro
+<Base title="…" canonical={`https://${config.domain}/`} hideWhatsApp={true}>
+  <main class="home">
+    <h1>Que tipo de <em>evento</em> você vai realizar?</h1>
+    <div class="home-grid">
+      {cards.map((c) => (
+        <a class="tri-card" href={c.href} data-funil={c.funil}
+           {...(c.external ? { target: '_blank', rel: 'noopener' } : {})}>
+          <img src={c.img} alt={`Eventos — ${c.label}`} loading="lazy" />
+          <div class="tri-card-body"><h2>{c.label}</h2><span class="tri-cta">Solicitar orçamento →</span></div>
+        </a>
+      ))}
+    </div>
+  </main>
+  <script>
+    document.querySelectorAll('[data-funil]').forEach((el) => el.addEventListener('click', () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'escolha_funil', funil: el.getAttribute('data-funil') });
+    }));
+  </script>
+</Base>
+```
+
+**CSS** (`src/styles/home.css`): `@font-face` da marca + tokens + layout. `.tri-card` = aspect-ratio 3/4, imagem `position:absolute; z-index:-2`, gradiente `::before`, hover zoom; grid 3→1 coluna no mobile; fundo charcoal herdando a identidade do cliente.

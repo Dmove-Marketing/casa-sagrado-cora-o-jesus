@@ -50,7 +50,7 @@ export function initForms() {
     form.addEventListener('focusin', () => {
       if (!started) {
         started = true;
-        (window as any).dataLayer?.push({ event: 'form_start', form_id: formId, project });
+        (window as any).dataLayer?.push({ event: 'form_start', form_source: 'form', form_id: formId, project });
       }
     });
 
@@ -227,7 +227,15 @@ export function initForms() {
         let json: any = {};
         try { json = await res.json(); } catch {}
 
-        (window as any).dataLayer?.push({ event: 'form_submit', form_id: formId, project, ...capitalizedFields });
+        // dataLayer limpo, SEM PII (o GTM lê e-mail/telefone/nome do DOM via Enhanced Conversions)
+        (window as any).dataLayer?.push({
+          event: 'form_submit',
+          form_source: 'form',
+          form_id: formId,
+          project,
+          tipo_evento: rawData['tipo_evento'] || '',
+          event_id: tracking['event_id'] || (window as any).__page_event_id || '',
+        });
 
         const redir = redirectUrl || json.redirect;
         if (redir) {
@@ -250,7 +258,7 @@ export function initForms() {
             </div>`;
         }
       } catch (err: any) {
-        (window as any).dataLayer?.push({ event: 'form_error', form_id: formId, error: err.message });
+        (window as any).dataLayer?.push({ event: 'form_error', form_source: 'form', form_id: formId, error: err.message });
 
         if (msgEl) {
           msgEl.innerHTML = 'Erro ao enviar. Tente novamente mais tarde.';
