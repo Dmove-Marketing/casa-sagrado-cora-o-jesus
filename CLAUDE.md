@@ -102,7 +102,7 @@ O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o si
 - **Fontes:** percorra os elementos e cheque `getComputedStyle().fontFamily` — nenhum fora da fonte do design.
 - **Screenshots:** `tools/shot.mjs` captura frames rolando. `fullPage` **não dispara** o reveal (seções em branco) — role de verdade ou force `.is-visible`.
 - **VRT:** `npm run compare` compara contra o HTML do design (baseline greenfield).
-- **Lighthouse:** `npm run audit`. + checar links quebrados.
+- **Lighthouse / PageSpeed:** `npm run audit`. + checar links quebrados. Para otimizar de verdade (LCP, imagens, fontes, libs), siga **[docs/performance.md](docs/performance.md)** — playbook com as armadilhas do Astro (LCP nunca `lazy`, carrossel empilhado, preload que casa, CSS de lib fora do crítico, self-host de fonte, cache de CDN).
 - **Form:** confira o wiring; só dispare **lead de teste real no n8n com o OK do usuário**.
 - **Tracking:** valide em runtime (ver `docs/tracking-gtm.md`) — cookies `utm_*`/`_external_id`, `window.__page_event_id` e os seletores `#form-field-*` (replicando os cJS do container). Depois o cliente valida no GTM Preview/Tag Assistant.
 
