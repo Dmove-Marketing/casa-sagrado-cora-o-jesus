@@ -1,5 +1,31 @@
 import { keyMap, trackingParamKeys, getPageSource } from './lead-payload';
 
+// Captura o IP público do visitante uma única vez (memoizado). Em produção usa o
+// endpoint same-origin do Cloudflare (/cdn-cgi/trace), sem terceiros; cai no ipify
+// como fallback (ex.: dev local, VPS sem Cloudflare).
+let clientIpPromise: Promise<string> | null = null;
+export function getClientIp(): Promise<string> {
+  if (clientIpPromise) return clientIpPromise;
+  clientIpPromise = (async () => {
+    try {
+      const r = await fetch('/cdn-cgi/trace', { cache: 'no-store' });
+      if (r.ok) {
+        const m = (await r.text()).match(/^ip=(.+)$/m);
+        if (m) return m[1].trim();
+      }
+    } catch {}
+    try {
+      const r = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        if (j && j.ip) return j.ip as string;
+      }
+    } catch {}
+    return '';
+  })();
+  return clientIpPromise;
+}
+
 function applyPhoneMask(input: HTMLInputElement) {
   input.addEventListener('input', () => {
     let v = input.value.replace(/\D/g, '');
@@ -19,6 +45,7 @@ function applyPhoneMask(input: HTMLInputElement) {
 }
 
 export function initForms() {
+  getClientIp(); // aquece a captura de IP no load, para não atrasar o envio
   const forms = document.querySelectorAll<HTMLFormElement>('form[data-form-id]');
   forms.forEach((form) => {
     if ((form as any).__formsInitialized) return;
@@ -65,9 +92,11 @@ export function initForms() {
       let isValid = true;
 
       form.querySelectorAll<HTMLElement>('[required]').forEach((field) => {
+        const el = field as HTMLInputElement;
         const isEmpty =
-          !(field as HTMLInputElement).value ||
-          (field.tagName === 'SELECT' && (field as HTMLSelectElement).value === '');
+          el.type === 'checkbox'
+            ? !el.checked
+            : !el.value || (field.tagName === 'SELECT' && (field as HTMLSelectElement).value === '');
 
         if (isEmpty) {
           isValid = false;
@@ -173,7 +202,12 @@ export function initForms() {
 
       const formData = new FormData(form);
       const rawData: Record<string, string> = {};
-      formData.forEach((v, k) => { if (k !== 'website') rawData[k] = v.toString(); });
+      // serializa campos; nomes repetidos (ex.: checkboxes) viram lista separada por vírgula
+      formData.forEach((v, k) => {
+        if (k === 'website') return;
+        const val = v.toString();
+        rawData[k] = rawData[k] ? `${rawData[k]}, ${val}` : val;
+      });
 
       const trackingRaw = sessionStorage.getItem('dmove_tracking');
       const tracking: Record<string, string> = trackingRaw ? JSON.parse(trackingRaw) : {};
@@ -195,12 +229,22 @@ export function initForms() {
       trackingParamKeys.forEach(k => { if (tracking[k]) qs.set(k, tracking[k]); });
       const fonte = qs.toString() ? `${fonteBase}?${qs.toString()}` : fonteBase;
 
-      // Campos Meta CAPI — enviados também como campos flat para uso direto no n8n
+      // Campos de tracking flat pro n8n: Meta CAPI (fbc/fbp/external_id/event_id)
+      // + Google Ads OCI (gclid/gbraid/wbraid) para atribuir a conversão ao clique.
       const metaCapi: Record<string, string> = {};
       if (tracking['fbc'])         metaCapi['fbc']         = tracking['fbc'];
       if (tracking['fbp'])         metaCapi['fbp']         = tracking['fbp'];
       if (tracking['external_id']) metaCapi['external_id'] = tracking['external_id'];
       if (tracking['event_id'])    metaCapi['event_id']    = tracking['event_id'];
+      if (tracking['gclid'])       metaCapi['gclid']       = tracking['gclid'];
+      if (tracking['gbraid'])      metaCapi['gbraid']      = tracking['gbraid'];
+      if (tracking['wbraid'])      metaCapi['wbraid']      = tracking['wbraid'];
+
+      // IP do visitante (já aquecido no load); timeout curto para nunca travar o envio
+      const clientIp = await Promise.race([
+        getClientIp(),
+        new Promise<string>((resolve) => setTimeout(() => resolve(''), 1500)),
+      ]);
 
       const payload: Record<string, string> = {
         ...capitalizedFields,
@@ -208,6 +252,7 @@ export function initForms() {
         Data: dateStr,
         'Horário': timeStr,
         'URL da página': window.location.href,
+        'IP do usuário': clientIp,
         'Agente de usuário': navigator.userAgent,
         'Desenvolvido por': 'Dmove',
         form_id: formId,
