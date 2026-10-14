@@ -108,6 +108,8 @@ async function formulario(url, formId, rotulo) {
   if (await tem('data_evento')) await page.$eval(`${f} [name="data_evento"]`, (el) => { el.value = '20/12/2026'; });
   if (await tem('convidados')) await page.fill(`${f} [name="convidados"]`, '150');
   for (const s of await page.$$(`${f} select[required]`)) if (!(await s.inputValue())) await s.selectOption({ index: 1 });
+  // o Pixel cria o _fbp depois do carregamento: o site tem de ler no envio
+  await page.evaluate(() => { document.cookie = '_fbp=fb.1.1700000000000.123456789;path=/'; });
   // clica no botão como o usuário (o template escuta o clique; sites mais antigos, o evento submit)
   const botao = page.locator(`${f} .form-submit, ${f} [type="submit"]`).first();
   if (await botao.count()) await botao.click(); else await page.$eval(f, (el) => el.requestSubmit());
@@ -120,6 +122,7 @@ async function formulario(url, formId, rotulo) {
   check(a.vars['cJS - First Name'] === 'ana' && a.vars['cJS - Last Name'] === 'maria souza', `nome = ${a.vars['cJS - First Name']} / ${a.vars['cJS - Last Name']}`);
   check(a.vars['Dados Fornecidos pelo Usuário']?.email === 'ana.souza@teste.com', 'Dados Fornecidos pelo Usuário preenchida');
   check(a.vars['event_id_server'] && a.vars['event_id_server'] === hooks[0]?.event_id, `event_id igual no GTM e no n8n (${a.vars['event_id_server']})`);
+  check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, `payload do n8n com fbp, external_id e event_id (${hooks[0]?.fbp})`);
   check(a.vars['utm_source'] === 'google' && a.vars['utm_campaign'] === 'teste-gtm' && !!a.vars['cookie - _external_id'], 'UTMs e _external_id lidos dos cookies');
   check(a.tags.slice().sort().join() === LEAD, `tags: ${a.tags.join(' | ')}`);
   const fs = await ultimo(av, 'form_start');
@@ -145,6 +148,7 @@ try {
   if (!comWa) { console.log('\n(sem popup do WhatsApp no dist/)'); throw 'fim'; }
   console.log(`\nPopup do WhatsApp (${comWa.rota})`);
   const { ctx, page, hooks, av } = await abrir(`${comWa.rota}?utm_source=meta`);
+  await page.evaluate(() => { document.cookie = '_fbp=fb.1.1700000000000.123456789;path=/'; });
   await page.click('#wa-toggle');
   const c = await ultimo(av, 'whatsapp_click');
   check(c?.push.click_type === 'abrir_popup' && c.tags.slice().sort().join() === CONTACT, `abrir popup → Contact (${c?.tags.join(' | ')})`);
@@ -158,6 +162,7 @@ try {
   check(a?.vars['cJS - Email'] === 'bruno@teste.com' && a?.vars['cJS - Telefone'] === '+5517997546177' && a?.vars['cJS - First Name'] === 'bruno', `PII do popup: ${a?.vars['cJS - Email']} ${a?.vars['cJS - Telefone']} ${a?.vars['cJS - First Name']}`);
   check(a?.tags.slice().sort().join() === LEAD, `tags: ${a?.tags.join(' | ')}`);
   check(a?.vars['event_id_server'] === hooks[0]?.event_id, 'event_id igual no GTM e no n8n');
+  check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, 'payload do popup com fbp e external_id');
   await page.click('.wa-cta');
   const cc = av.filter((x) => x.event === 'whatsapp_click').at(-1);
   check(cc?.push.click_type === 'continuar_conversa' && cc.tags.join() === '03 | GA4 | whatsapp_click', `"Continuar no WhatsApp" → só GA4 (${cc?.tags.join(' | ')})`);

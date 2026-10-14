@@ -229,6 +229,11 @@ export function initForms() {
       trackingParamKeys.forEach(k => { if (tracking[k]) qs.set(k, tracking[k]); });
       const fonte = qs.toString() ? `${fonteBase}?${qs.toString()}` : fonteBase;
 
+      // _fbp/_fbc lidos agora: na 1ª visita o Pixel cria o cookie depois do UTMCapture rodar
+      const lerCookie = (n: string) => { const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? decodeURIComponent(m.pop() as string) : ''; };
+      if (!tracking['fbp']) tracking['fbp'] = lerCookie('_fbp');
+      if (!tracking['fbc']) tracking['fbc'] = lerCookie('_fbc');
+
       // Campos de tracking flat pro n8n: Meta CAPI (fbc/fbp/external_id/event_id)
       // + Google Ads OCI (gclid/gbraid/wbraid) para atribuir a conversão ao clique.
       const metaCapi: Record<string, string> = {};
