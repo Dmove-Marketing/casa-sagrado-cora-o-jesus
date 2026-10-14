@@ -225,25 +225,19 @@ export function initForms() {
         capitalizedFields[mappedKey] = val;
       });
 
-      const qs = new URLSearchParams();
-      trackingParamKeys.forEach(k => { if (tracking[k]) qs.set(k, tracking[k]); });
-      const fonte = qs.toString() ? `${fonteBase}?${qs.toString()}` : fonteBase;
-
       // _fbp/_fbc lidos agora: na 1ª visita o Pixel cria o cookie depois do UTMCapture rodar
       const lerCookie = (n: string) => { const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? decodeURIComponent(m.pop() as string) : ''; };
       if (!tracking['fbp']) tracking['fbp'] = lerCookie('_fbp');
       if (!tracking['fbc']) tracking['fbc'] = lerCookie('_fbc');
 
-      // Campos de tracking flat pro n8n: Meta CAPI (fbc/fbp/external_id/event_id)
-      // + Google Ads OCI (gclid/gbraid/wbraid) para atribuir a conversão ao clique.
-      const metaCapi: Record<string, string> = {};
-      if (tracking['fbc'])         metaCapi['fbc']         = tracking['fbc'];
-      if (tracking['fbp'])         metaCapi['fbp']         = tracking['fbp'];
-      if (tracking['external_id']) metaCapi['external_id'] = tracking['external_id'];
-      if (tracking['event_id'])    metaCapi['event_id']    = tracking['event_id'];
-      if (tracking['gclid'])       metaCapi['gclid']       = tracking['gclid'];
-      if (tracking['gbraid'])      metaCapi['gbraid']      = tracking['gbraid'];
-      if (tracking['wbraid'])      metaCapi['wbraid']      = tracking['wbraid'];
+      const qs = new URLSearchParams();
+      trackingParamKeys.forEach(k => { if (tracking[k]) qs.set(k, tracking[k]); });
+      const fonte = qs.toString() ? `${fonteBase}?${qs.toString()}` : fonteBase;
+
+      // Um campo por sinal de tracking, para o n8n usar direto (UTMs, click IDs, Meta CAPI, origem).
+      // O "Fonte" continua com tudo na query string, por compatibilidade com os fluxos que já leem dele.
+      const camposTracking: Record<string, string> = {};
+      [...trackingParamKeys, 'landing_page', 'referrer'].forEach((k) => { if (tracking[k]) camposTracking[k] = tracking[k]; });
 
       // IP do visitante (já aquecido no load); timeout curto para nunca travar o envio
       const clientIp = await Promise.race([
@@ -262,7 +256,7 @@ export function initForms() {
         'Desenvolvido por': 'Dmove',
         form_id: formId,
         form_name: formId,
-        ...metaCapi,
+        ...camposTracking,
       };
 
       try {

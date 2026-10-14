@@ -88,7 +88,8 @@ async function abrir(url) {
     Object.defineProperty(window, 'dataLayer', { get: () => dl, set: (v) => { dl = instalar(v); }, configurable: true });
   }, { defs, gatilhos, tagsAtivas });
   const page = await ctx.newPage();
-  await page.goto(BASE + url);
+  await page.goto(BASE + url, { waitUntil: 'domcontentloaded' }); // o load espera iframes externos (mapa)
+  await page.waitForTimeout(500);
   return { ctx, page, hooks, av };
 }
 const ultimo = async (av, ev) => { for (let i = 0; i < 60; i++) { const a = av.filter((x) => x.event === ev).at(-1); if (a) return a; await new Promise((r) => setTimeout(r, 100)); } };
@@ -123,6 +124,7 @@ async function formulario(url, formId, rotulo) {
   check(a.vars['Dados Fornecidos pelo Usuário']?.email === 'ana.souza@teste.com', 'Dados Fornecidos pelo Usuário preenchida');
   check(a.vars['event_id_server'] && a.vars['event_id_server'] === hooks[0]?.event_id, `event_id igual no GTM e no n8n (${a.vars['event_id_server']})`);
   check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, `payload do n8n com fbp, external_id e event_id (${hooks[0]?.fbp})`);
+  check(hooks[0]?.utm_source === 'google' && hooks[0]?.utm_campaign === 'teste-gtm' && hooks[0]?.gclid === 'TESTE' && !!hooks[0]?.landing_page, 'payload do n8n com UTMs, gclid e landing_page em campos separados');
   check(a.vars['utm_source'] === 'google' && a.vars['utm_campaign'] === 'teste-gtm' && !!a.vars['cookie - _external_id'], 'UTMs e _external_id lidos dos cookies');
   check(a.tags.slice().sort().join() === LEAD, `tags: ${a.tags.join(' | ')}`);
   const fs = await ultimo(av, 'form_start');
@@ -163,6 +165,7 @@ try {
   check(a?.tags.slice().sort().join() === LEAD, `tags: ${a?.tags.join(' | ')}`);
   check(a?.vars['event_id_server'] === hooks[0]?.event_id, 'event_id igual no GTM e no n8n');
   check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, 'payload do popup com fbp e external_id');
+  check(hooks[0]?.utm_source === 'meta', 'payload do popup com utm_source em campo separado');
   await page.click('.wa-cta');
   const cc = av.filter((x) => x.event === 'whatsapp_click').at(-1);
   check(cc?.push.click_type === 'continuar_conversa' && cc.tags.join() === '03 | GA4 | whatsapp_click', `"Continuar no WhatsApp" → só GA4 (${cc?.tags.join(' | ')})`);
