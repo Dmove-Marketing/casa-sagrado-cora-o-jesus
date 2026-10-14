@@ -74,7 +74,7 @@ Use o preset: `getPreset(config.forms['lead-form'].preset)` de `src/scripts/form
 - `detalhes_adicionais` = "Detalhes do evento (não obrigatório)" — **único opcional**
 - Corporativo → `empresa` ("Nome da empresa") como **1º campo**
 - Ligue o `<form>` ao `forms.ts` via `data-form-id`, `data-submit-url`, `data-grid-id`, `data-success-id` + honeypot `name="website"`.
-- **`id` de cada campo = `form-field-<name>`** (ex.: `id="form-field-telefone"`). O GTM lê e-mail/telefone/nome do DOM por esses IDs (Enhanced Conversions). O `<label for>` acompanha. **Sem isso, telefone e nome não são capturados nas conversões.**
+- **`name` canônico em cada campo** (`nome`, `telefone`, `email`) dentro do `<form data-form-id>`: o GTM lê e-mail/telefone/nome do DOM por `form[data-form-id="<form_id>"] [name=…]` (Enhanced Conversions). Use também `id="form-field-<name>"` (fallback do GTM e `<label for>`). **Sem o `name` canônico, telefone e nome não são capturados nas conversões.**
 
 **Nomes canônicos (batem com o keyMap do n8n):** `nome, telefone, email, tipo_evento, data_evento, convidados, empresa, detalhes_adicionais`.
 
@@ -88,14 +88,16 @@ O `global.css` usa `--font-display`/`--font-body` (default de sistema). Para a f
 
 ## Tracking / GTM — contrato obrigatório com o container padrão
 
-O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o site não os produz, as conversões chegam vazias. O `UTMCapture.astro` e o `forms.ts` deste template já cumprem o contrato — **não regride isso**. Detalhes em `docs/tracking-gtm.md`. Resumo:
+O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o site não os produz, as conversões chegam vazias. O `UTMCapture.astro`, o `forms.ts` e o `WhatsAppWidget.astro` deste template já cumprem o contrato — **não regride isso**. Detalhes em `docs/tracking-gtm.md`. Resumo:
 
 - **UTMs em COOKIES** — `UTMCapture` grava `utm_source/medium/campaign/content/term` + click IDs como cookies 1st-party (90d). O GTM lê de cookie, não de dataLayer. (Também resolve a persistência: sobrevive a fechar aba/voltar depois.)
 - **`_external_id`** — cookie 1st-party (UUID, 365d) para Enhanced Conversions/CAPI.
 - **`window.__page_event_id`** — UUID por pageview; o GTM usa como `event_id` do Pixel e o site manda o MESMO id no webhook → dedup Pixel×CAPI.
-- **PII pelo DOM** — o GTM lê e-mail/telefone/nome dos campos `#form-field-*` (ver Fase 4). **Não** mande PII no dataLayer.
-- **`form_submit`** (form e WhatsApp) dispara as conversões — payload limpo: `{ event, form_source: 'form'|'whatsapp', form_id, tipo_evento, event_id }`. Idem `form_start`/`form_error`.
-- Container de referência: `Clientes/a' Playbooks e Metodologia/GTM-PKJ6HVMP_workspace20.json`.
+- **PII pelo DOM** — o GTM lê e-mail/telefone/nome do formulário que enviou: `form[data-form-id="<form_id>"] [name=nome|telefone|email]` (ver Fase 4) ou, no popup do WhatsApp, o espelho `[data-wa-form]` (`Nome`, `WhatsApp`, `E-mail`). **Não** mande PII no dataLayer.
+- **`form_submit`** (form e WhatsApp) dispara a conversão **Lead** — payload limpo: `{ event, form_source: 'form'|'whatsapp', form_id, tipo_evento, event_id }`. Idem `form_start`/`form_error`. Com redirect, o `forms.ts` espera o GTM (`eventCallback`) antes de navegar.
+- **`whatsapp_click`** dispara a conversão **Contact** (`click_type: 'abrir_popup'`, `link_location: 'flutuante'|'teaser'`). Depois do lead, o botão "Continuar no WhatsApp" manda `click_type: 'continuar_conversa'`, que vai só ao GA4. Link direto para `wa.me` fora do widget: emitir `whatsapp_click` com `click_type: 'link_direto'`.
+- **Nunca** ligue o envio ao submit nativo do GTM ("Envio de formulário"): conta o lead em dobro.
+- **Container padrão: `docs/gtm/GTM-modelo-dmove-astro-v2.json`** (como importar e configurar: `docs/gtm/LEIA-ME.md`). O antigo `GTM-PKJ6HVMP` é do WordPress/Elementor e não serve para sites Astro.
 
 ## FASE 6 — QA (com evidência)
 
@@ -104,7 +106,7 @@ O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o si
 - **VRT:** `npm run compare` compara contra o HTML do design (baseline greenfield).
 - **Lighthouse / PageSpeed:** `npm run audit`. + checar links quebrados. Para otimizar de verdade (LCP, imagens, fontes, libs), siga **[docs/performance.md](docs/performance.md)** — playbook com as armadilhas do Astro (LCP nunca `lazy`, carrossel empilhado, preload que casa, CSS de lib fora do crítico, self-host de fonte, cache de CDN).
 - **Form:** confira o wiring; só dispare **lead de teste real no n8n com o OK do usuário**.
-- **Tracking:** valide em runtime (ver `docs/tracking-gtm.md`) — cookies `utm_*`/`_external_id`, `window.__page_event_id` e os seletores `#form-field-*` (replicando os cJS do container). Depois o cliente valida no GTM Preview/Tag Assistant.
+- **Tracking:** `npm run test:gtm` — roda o container (`docs/gtm/`) contra o site buildado, sem GTM e sem lead real: todo `form[data-form-id]` e o popup do WhatsApp, checando PII lida, event_id igual ao do webhook, cookies e quais tags disparariam. Tem de terminar em "Tudo certo". Depois, validação no GTM Preview/Tag Assistant (checklist em `docs/gtm/LEIA-ME.md`).
 
 ## FASE 7 — Deploy na VPS
 

@@ -54,8 +54,9 @@ O template produz todos os sinais que o container GTM da Dmove consome:
 - **Meta CAPI** — `fbc`, `fbp`, `external_id` (UUID 365d), `event_id` (UUID por pageview para dedup Pixel x CAPI).
 - **Google Ads** — `gclid`, `gbraid`, `wbraid` enviados no payload para atribuicao offline (OCI).
 - **IP do visitante** — capturado via Cloudflare trace (ou ipify como fallback) e enviado no payload.
-- **Enhanced Conversions** — o GTM le email/telefone/nome do DOM pelos IDs `#form-field-*`. Por isso cada campo do form precisa ter `id="form-field-<nome>"`.
-- **Eventos GTM** — `form_start`, `form_submit`, `form_error` (form e WhatsApp).
+- **Enhanced Conversions** — o GTM le email/telefone/nome do DOM do formulario que enviou (`form[data-form-id] [name=nome|telefone|email]`) ou do espelho `[data-wa-form]` do popup. Nada de PII no dataLayer.
+- **Eventos GTM** — `form_start`, `form_submit` (conversao Lead), `form_error` (form e WhatsApp) e `whatsapp_click` (conversao Contact).
+- **Container GTM pronto** — `docs/gtm/GTM-modelo-dmove-astro-v2.json`, com LEIA-ME de importacao e `npm run test:gtm` (testa o container contra o site sem GTM e sem lead real).
 
 ### Componentes de UI
 

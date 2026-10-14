@@ -272,8 +272,14 @@ export function initForms() {
         let json: any = {};
         try { json = await res.json(); } catch {}
 
-        // dataLayer limpo, SEM PII (o GTM lê e-mail/telefone/nome do DOM via Enhanced Conversions)
+        const redir = redirectUrl || json.redirect;
+
+        // dataLayer limpo, SEM PII: o GTM lê nome/telefone/e-mail do DOM deste formulário (form[data-form-id]).
+        // Com redirect, espera o GTM disparar as tags (eventCallback) antes de navegar; sem GTM, cai no setTimeout.
+        let navegou = false;
+        const navegar = () => { if (navegou || !redir) return; navegou = true; window.location.href = redir; };
         (window as any).dataLayer?.push({
+          ...(redir ? { eventCallback: navegar, eventTimeout: 800 } : {}),
           event: 'form_submit',
           form_source: 'form',
           form_id: formId,
@@ -282,9 +288,8 @@ export function initForms() {
           event_id: tracking['event_id'] || (window as any).__page_event_id || '',
         });
 
-        const redir = redirectUrl || json.redirect;
         if (redir) {
-          window.location.href = redir;
+          setTimeout(navegar, 900);
           return;
         }
 

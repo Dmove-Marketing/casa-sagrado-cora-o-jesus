@@ -1,7 +1,7 @@
 {
   "name": "dmove-astro-template",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -14,7 +14,8 @@
     "extract": "node extract-assets.mjs",
     "compare": "node scripts/compare.mjs",
     "audit": "node scripts/run-lighthouse.mjs",
-    "deploy": "npm run build && node deploy.mjs"
+    "deploy": "npm run build && node deploy.mjs",
+    "test:gtm": "npm run build && node docs/gtm/testar.mjs"
   },
   "dependencies": {
     "astro": "^7.3.2",
