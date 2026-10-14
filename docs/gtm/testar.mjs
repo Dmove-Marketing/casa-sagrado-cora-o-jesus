@@ -125,6 +125,8 @@ async function formulario(url, formId, rotulo) {
   check(a.vars['event_id_server'] && a.vars['event_id_server'] === hooks[0]?.event_id, `event_id igual no GTM e no n8n (${a.vars['event_id_server']})`);
   check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, `payload do n8n com fbp, external_id e event_id (${hooks[0]?.fbp})`);
   check(hooks[0]?.utm_source === 'google' && hooks[0]?.utm_campaign === 'teste-gtm' && hooks[0]?.gclid === 'TESTE' && !!hooks[0]?.landing_page, 'payload do n8n com UTMs, gclid e landing_page em campos separados');
+  const fonteEsperada = `Landing page/${url.replace(/\//g, '') || 'home'}`;
+  check(hooks[0]?.Fonte === fonteEsperada, `Fonte só com o rótulo (${hooks[0]?.Fonte})`);
   check(a.vars['utm_source'] === 'google' && a.vars['utm_campaign'] === 'teste-gtm' && !!a.vars['cookie - _external_id'], 'UTMs e _external_id lidos dos cookies');
   check(a.tags.slice().sort().join() === LEAD, `tags: ${a.tags.join(' | ')}`);
   const fs = await ultimo(av, 'form_start');
@@ -166,6 +168,7 @@ try {
   check(a?.vars['event_id_server'] === hooks[0]?.event_id, 'event_id igual no GTM e no n8n');
   check(hooks[0]?.fbp === 'fb.1.1700000000000.123456789' && !!hooks[0]?.external_id, 'payload do popup com fbp e external_id');
   check(hooks[0]?.utm_source === 'meta', 'payload do popup com utm_source em campo separado');
+  check(hooks[0]?.Fonte === `Landing page/${comWa.rota.replace(/\//g, '') || 'home'}`, `Fonte do popup só com o rótulo (${hooks[0]?.Fonte})`);
   await page.click('.wa-cta');
   const cc = av.filter((x) => x.event === 'whatsapp_click').at(-1);
   check(cc?.push.click_type === 'continuar_conversa' && cc.tags.join() === '03 | GA4 | whatsapp_click', `"Continuar no WhatsApp" → só GA4 (${cc?.tags.join(' | ')})`);
