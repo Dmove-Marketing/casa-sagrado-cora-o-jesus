@@ -3,7 +3,7 @@
   "project_slug": "cscjeventos",
   "domain": "cscjeventos.com.br",
   "client": "Casa Sagrado Coração de Jesus",
-  "environment": "development",
+  "environment": "production",
   "tracking": {
     "gtm_id": "GTM-N554JGJ6",
     "enabled": true
