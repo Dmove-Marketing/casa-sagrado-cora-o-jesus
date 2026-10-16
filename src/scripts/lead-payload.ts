@@ -23,20 +23,12 @@ export const keyMap: Record<string, string> = {
 // normais (formulário da página) e o popup de WhatsApp, para que todos ofereçam
 // exatamente a mesma lista. Não inclui o placeholder "Selecione...".
 export const tipoEventoOptions: { value: string; label: string }[] = [
-  { value: 'Aniversario',                          label: 'Aniversário' },
-  { value: 'Aniversario debutante',                label: 'Aniversário debutante' },
-  { value: 'Bodas',                                label: 'Bodas' },
-  { value: 'Casamento',                            label: 'Casamento' },
-  { value: 'Confraternizacao corporativa',         label: 'Confraternização corporativa' },
-  { value: 'Confraternizacao social',              label: 'Confraternização social' },
-  { value: 'Corporativo',                          label: 'Corporativo' },
-  { value: 'Feiras e Exposicoes',                  label: 'Feiras e Exposições' },
-  { value: 'Masterclass e Palestras',              label: 'Masterclass e Palestras' },
-  { value: 'Mentorias e Treinamentos',             label: 'Mentorias e Treinamentos' },
-  { value: 'Offsite corporativo',                  label: 'Offsite corporativo' },
-  { value: 'Reunioes de Networking',               label: 'Reuniões de Networking' },
-  { value: 'Workshops, Conferencias e Seminarios', label: 'Workshops, Conferências e Seminários' },
-  { value: 'Outros',                               label: 'Outros' },
+  { value: 'Retiro espiritual',                    label: 'Retiro espiritual' },
+  { value: 'Casamento intimista / Bodas',          label: 'Casamento intimista / Bodas' },
+  { value: 'Evento corporativo / Formação',        label: 'Evento corporativo / Formação' },
+  { value: 'Imersão / Desenvolvimento humano',     label: 'Imersão / Desenvolvimento humano' },
+  { value: 'Encontro educacional',                 label: 'Encontro educacional' },
+  { value: 'Outro',                                label: 'Outro' },
 ];
 
 export const trackingParamKeys = [

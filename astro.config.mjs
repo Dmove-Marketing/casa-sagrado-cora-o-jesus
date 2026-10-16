@@ -1,14 +1,23 @@
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
-// Ajuste `site` para o domínio do projeto (usado em canonical/OG).
 export default defineConfig({
-  site: 'https://eventos.cliente.com.br',
+  site: 'https://cscjeventos.com.br',
   output: 'static',
+  trailingSlash: 'never',
   prefetch: true,
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/404'),
+    }),
+  ],
   build: {
     inlineStylesheets: 'always',
+    format: 'file',
   },
   server: {
     port: 4321,
   },
+  vite: { plugins: [tailwindcss()] },
 });

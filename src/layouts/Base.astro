@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import '../styles/cscj.css';
 import GTMHead from '../components/tracking/GTMHead.astro';
 import GTMBody from '../components/tracking/GTMBody.astro';
 import UTMCapture from '../components/tracking/UTMCapture.astro';
@@ -22,28 +22,28 @@ interface WhatsAppStep1Field {
 interface Props {
   title: string;
   description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   ogImage?: string;
   canonical?: string;
   noIndex?: boolean;
   theme?: 'dark' | 'light';
   jsonLd?: Record<string, any>;
-  /** Campos da etapa 1 do popup WhatsApp — mesmas opções do formulário da página */
   whatsAppStep1Fields?: WhatsAppStep1Field[];
-  /** Mensagem de boas-vindas do popup WhatsApp (use \n para quebrar linha) */
   whatsAppMessage?: string;
-  /** Exibe o campo "Empresa" como primeiro campo da etapa 1 do popup WhatsApp */
   whatsAppShowEmpresaField?: boolean;
-  /** Oculta o widget de WhatsApp (ex.: home de triagem, que só roteia) */
   hideWhatsApp?: boolean;
 }
 
 const {
   title,
   description = '',
+  ogTitle,
+  ogDescription,
   ogImage = '/images/og-default.jpg',
   canonical,
   noIndex = false,
-  theme = 'dark',
+  theme = 'light',
   jsonLd,
   whatsAppStep1Fields,
   whatsAppMessage,
@@ -55,8 +55,9 @@ import config from '../../config.json';
 const gtmId = config.tracking?.gtm_id || '';
 const trackingEnabled = config.tracking?.enabled !== false;
 
-// og:image precisa de URL absoluta para redes sociais e crawlers
 const ogImageAbs = ogImage.startsWith('http') ? ogImage : `https://${config.domain}${ogImage}`;
+const resolvedOgTitle = ogTitle || title;
+const resolvedOgDescription = ogDescription || description;
 
 const defaultJsonLd = {
   '@context': 'https://schema.org',
@@ -68,7 +69,7 @@ const defaultJsonLd = {
 ---
 
 <!doctype html>
-<html lang="pt-BR" data-theme={theme}>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
@@ -85,16 +86,22 @@ const defaultJsonLd = {
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    {description && <meta property="og:description" content={description} />}
+    <meta property="og:title" content={resolvedOgTitle} />
+    {resolvedOgDescription && <meta property="og:description" content={resolvedOgDescription} />}
     <meta property="og:image" content={ogImageAbs} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
 
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={resolvedOgTitle} />
+    {resolvedOgDescription && <meta name="twitter:description" content={resolvedOgDescription} />}
+    <meta name="twitter:image" content={ogImageAbs} />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/images/icone.png" />
-    <link rel="shortcut icon" href="/images/icone.png" />
-    <link rel="apple-touch-icon" href="/images/icone.png" />
+    <link rel="icon" type="image/webp" href="/images/favicon.webp" />
+    <link rel="shortcut icon" href="/images/favicon.webp" />
+    <link rel="apple-touch-icon" href="/images/favicon.webp" />
 
     <!-- GTM Head -->
     {trackingEnabled && gtmId && <GTMHead gtmId={gtmId} />}
@@ -111,13 +118,13 @@ const defaultJsonLd = {
     <!-- UTM Capture -->
     {trackingEnabled && <UTMCapture />}
 
-    <!-- Gatilho de interação: dispara 'user_interaction' no dataLayer para gatilhar Pixel/CAPI no GTM sob demanda -->
+    <!-- Gatilho de interação -->
     {trackingEnabled && gtmId && <InteractionTrigger />}
 
     <!-- Conteúdo da página -->
     <slot />
 
-    <!-- WhatsApp Flutuante — configurar em config.json > whatsapp -->
+    <!-- WhatsApp Flutuante -->
     {!hideWhatsApp && <WhatsAppWidget showEmpresaField={whatsAppShowEmpresaField} />}
 
     <!-- Scripts adicionais -->

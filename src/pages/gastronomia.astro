@@ -1,0 +1,42 @@
+---
+import CSCJ from '../layouts/CSCJ.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Img from '../components/ui/Img.astro';
+
+const path = '/gastronomia';
+---
+
+<CSCJ
+  title="Gastronomia — Casa Sagrado Coração de Jesus"
+  description="Cozinha afetiva com ingredientes frescos, sazonais e orgânicos da própria horta."
+  ogDescription="Sabores simples, afetivos e bem preparados."
+  ogImage="/images/gastronomia-principal.png"
+  canonical="https://cscjeventos.com.br/gastronomia"
+  currentPath={path}
+>
+  <div class="flex min-h-screen flex-col">
+    <Header currentPath={path} />
+    <main class="flex-1">
+      <section class="container-prose grid gap-10 py-20 md:grid-cols-12">
+        <div class="md:col-span-6 flex flex-col justify-center">
+          <span class="eyebrow">Gastronomia</span>
+          <h1 class="mt-3 font-serif text-5xl text-primary text-balance md:text-6xl">Cuidado traduzido em sabor.</h1>
+          <p class="mt-6 font-serif text-xl text-foreground/85">Mais do que refeições, oferecemos uma pausa de conforto, conexão e bem-estar.</p>
+          <p class="mt-4 text-foreground/80">Nossa cozinha valoriza ingredientes frescos, sazonais e, sempre que possível, orgânicos cultivados na própria horta da Casa, respeitando o tempo dos alimentos e das pessoas.</p>
+          <a href="/contato" class="mt-8 self-start rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-secondary">Planejar refeições do seu evento</a>
+        </div>
+        <div class="md:col-span-6">
+          <Img src="gastronomia-principal.png" alt="Cozinha da Casa" class="aspect-[4/5] w-full rounded-md object-cover" priority={true} width={600} height={750} />
+        </div>
+      </section>
+      <section style="background-color: var(--cream)">
+        <div class="container-prose grid gap-6 py-16 md:grid-cols-2">
+          <Img src="cozinha.png" alt="Cozinha artesanal" class="aspect-[4/3] w-full rounded-md object-cover" width={600} height={450} />
+          <Img src="restaurante.png" alt="Restaurante" class="aspect-[4/3] w-full rounded-md object-cover" width={600} height={450} />
+        </div>
+      </section>
+    </main>
+    <Footer currentPath={path} />
+  </div>
+</CSCJ>

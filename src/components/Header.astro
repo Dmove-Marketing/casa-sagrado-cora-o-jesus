@@ -1,0 +1,91 @@
+---
+import Img from './ui/Img.astro';
+
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '/' } = Astro.props;
+
+const links = [
+  { href: '/', label: 'Início' },
+  { href: '/sobre', label: 'A Casa' },
+  { href: '/espacos', label: 'Espaços' },
+  { href: '/gastronomia', label: 'Gastronomia' },
+  { href: '/contato', label: 'Contato' },
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
+  <div class="container-prose flex h-20 items-center justify-between md:h-24">
+    <a href="/" class="flex items-center gap-3" aria-label="Casa Sagrado Coração de Jesus — Página inicial">
+      <Img
+        src="logo.png"
+        alt="Casa Sagrado Coração de Jesus — Missionárias do SCJ Cabrini"
+        class="h-[4.5rem] w-auto md:h-[5.25rem]"
+        width={840}
+        priority={true}
+      />
+    </a>
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Navegação principal">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class={`text-sm transition hover:text-primary ${currentPath === link.href ? 'text-primary font-semibold' : 'text-foreground/80'}`}
+          aria-current={currentPath === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href="/contato" class="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-secondary">
+        Solicitar orçamento
+      </a>
+    </nav>
+    <button
+      id="menu-toggle"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="md:hidden rounded-md p-2 text-foreground"
+    >
+      <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>
+      </svg>
+      <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="hidden">
+        <path d="M18 6L6 18"/><path d="M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden border-t border-border/60 bg-background md:hidden" aria-label="Menu mobile">
+    <nav class="container-prose flex flex-col gap-1 py-4">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class={`rounded-md px-3 py-2.5 text-sm transition hover:bg-muted ${currentPath === link.href ? 'text-primary font-semibold' : 'text-foreground/80'}`}
+          aria-current={currentPath === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href="/contato" class="mt-2 rounded-full bg-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground transition hover:bg-secondary">
+        Solicitar orçamento
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const iconOpen = document.getElementById('menu-icon-open')!;
+  const iconClose = document.getElementById('menu-icon-close')!;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = !menu.classList.contains('hidden');
+    menu.classList.toggle('hidden', isOpen);
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Abrir menu' : 'Fechar menu');
+    iconOpen.classList.toggle('hidden', !isOpen);
+    iconClose.classList.toggle('hidden', isOpen);
+  });
+</script>

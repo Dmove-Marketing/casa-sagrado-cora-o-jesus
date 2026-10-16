@@ -74,9 +74,29 @@ const nucleo: PresetField[] = [
   detalhes,
 ];
 
-export const formPresets: Record<'social' | 'corporativo', PresetField[]> = {
+// Preset CSCJ — labels e placeholders fiéis ao site original (cscjeventos.com.br)
+const nucloCscj: PresetField[] = [
+  { name: 'nome',        type: 'text',    label: 'Nome completo',        placeholder: 'Como podemos chamar você?',                    required: true },
+  { name: 'email',       type: 'email',   label: 'E-mail',               placeholder: 'voce@email.com',                               required: true },
+  { name: 'telefone',    type: 'tel',     label: 'WhatsApp / Telefone',  placeholder: '(11) 90000-0000',                              required: true },
+  {
+    name: 'tipo_evento', type: 'select',  label: 'Tipo de evento',       required: false,
+    options: [
+      { value: '', label: 'Selecione...', disabled: true, selected: true },
+      ...tipoEventoOptions,
+    ],
+  },
+  { name: 'data_evento', type: 'text',    label: 'Data desejada',        placeholder: 'dd/mm/aaaa', datepicker: true,                 required: false },
+  { name: 'convidados',  type: 'number',  label: 'Nº de participantes',  placeholder: 'Ex.: 30',                                      required: false },
+  {
+    name: 'detalhes_adicionais', type: 'textarea', label: 'Mensagem',    placeholder: 'Conte-nos um pouco sobre seu evento ou retiro...', required: false, full: true,
+  },
+];
+
+export const formPresets: Record<'social' | 'corporativo' | 'cscj', PresetField[]> = {
   social: nucleo,
   corporativo: [empresa, ...nucleo],
+  cscj: nucloCscj,
 };
 
 // Mapa de funil (slug) → preset. Corporativos ganham o campo "empresa".
@@ -90,6 +110,6 @@ export const funnelPreset: Record<string, keyof typeof formPresets> = {
 };
 
 export function getPreset(name?: string): PresetField[] {
-  const key = (name as keyof typeof formPresets) || 'social';
-  return formPresets[key] || formPresets.social;
+  const key = (name as keyof typeof formPresets) || 'cscj';
+  return formPresets[key] || formPresets.cscj;
 }

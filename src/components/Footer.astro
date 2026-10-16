@@ -1,0 +1,44 @@
+---
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '/' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-border bg-primary text-primary-foreground">
+  <div class="container-prose grid gap-10 py-14 md:grid-cols-3">
+    <div>
+      <div class="font-serif text-xl">Casa Sagrado Coração de Jesus</div>
+      <p class="mt-3 text-sm text-primary-foreground/80">Espaço para retiros, formações, casamentos intimistas, eventos corporativos e celebrações com propósito.</p>
+    </div>
+    <div class="text-sm">
+      <div class="eyebrow" style="color: rgba(246,249,251,0.7)">Navegação</div>
+      <ul class="mt-4 space-y-2">
+        <li><a href="/sobre" class={`hover:text-[#e3ad4b] transition ${currentPath === '/sobre' ? 'text-[#e3ad4b]' : ''}`} aria-current={currentPath === '/sobre' ? 'page' : undefined}>A Casa</a></li>
+        <li><a href="/espacos" class={`hover:text-[#e3ad4b] transition ${currentPath === '/espacos' ? 'text-[#e3ad4b]' : ''}`} aria-current={currentPath === '/espacos' ? 'page' : undefined}>Espaços</a></li>
+        <li><a href="/gastronomia" class={`hover:text-[#e3ad4b] transition ${currentPath === '/gastronomia' ? 'text-[#e3ad4b]' : ''}`} aria-current={currentPath === '/gastronomia' ? 'page' : undefined}>Gastronomia</a></li>
+        <li><a href="/contato" class={`hover:text-[#e3ad4b] transition ${currentPath === '/contato' ? 'text-[#e3ad4b]' : ''}`} aria-current={currentPath === '/contato' ? 'page' : undefined}>Contato</a></li>
+      </ul>
+    </div>
+    <div class="text-sm">
+      <div class="eyebrow" style="color: rgba(246,249,251,0.7)">Contato</div>
+      <ul class="mt-4 space-y-2 text-primary-foreground/85">
+        <li>WhatsApp: <button type="button" onclick="event.stopPropagation(); window.openWaPopup?.('footer')" class="underline-offset-4 hover:underline">Falar agora</button></li>
+        <li>Equipe comercial — atendimento de seg. a sex.</li>
+        <li>
+          <a class="inline-flex items-start gap-2 underline-offset-4 hover:underline" href="https://www.google.com/maps/search/?api=1&query=Rua+Euridice+de+Caccine,+50+-+Jardim+São+Bernardo,+São+Paulo+-+SP,+04844-630" target="_blank" rel="noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Rua Euridice de Caccine, 50 — Jardim São Bernardo, São Paulo - SP, 04844-630</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-primary-foreground/15">
+    <div class="container-prose flex flex-col items-center justify-between gap-2 py-5 text-xs text-primary-foreground/70 md:flex-row">
+      <span>© {year} Casa Sagrado Coração de Jesus. Todos os direitos reservados.</span>
+      <span>Missionárias do Sagrado Coração de Jesus — Cabrini</span>
+    </div>
+  </div>
+</footer>

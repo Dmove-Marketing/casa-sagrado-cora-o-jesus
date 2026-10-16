@@ -1,0 +1,29 @@
+---
+import CSCJ from '../layouts/CSCJ.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<CSCJ
+  title="404 — Casa Sagrado Coração de Jesus"
+  description="Página não encontrada"
+  noIndex={true}
+  currentPath="/404"
+>
+  <div class="flex min-h-screen flex-col">
+    <Header currentPath="/404" />
+    <main class="flex-1">
+      <div class="flex min-h-[60vh] items-center justify-center bg-background px-4">
+        <div class="max-w-md text-center">
+          <h1 class="font-serif text-7xl text-primary">404</h1>
+          <h2 class="mt-4 font-serif text-xl text-foreground">Página não encontrada</h2>
+          <p class="mt-2 text-sm text-muted-foreground">A página que você procura não existe ou foi movida.</p>
+          <div class="mt-6">
+            <a href="/" class="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-secondary">Voltar ao início</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <Footer currentPath="/404" />
+  </div>
+</CSCJ>

@@ -562,6 +562,10 @@ const introMessages = [
     }, 280);
   }
 
+  // Expõe openPopup para que botões externos possam abrir o popup.
+  // Quem chamar deve disparar event.stopPropagation() para não acionar o __waOutsideClick.
+  window.openWaPopup = (origem) => openPopup(origem || 'page');
+
   toggle.addEventListener('click', () => {
     popup.hidden ? openPopup('flutuante') : closePopup();
   });

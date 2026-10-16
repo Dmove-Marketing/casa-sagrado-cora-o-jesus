@@ -19,3 +19,5 @@ npm-debug.log*
 
 # artefatos de conversão (scaffold greenfield)
 _work/
+_qa/
+reference/

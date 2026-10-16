@@ -297,19 +297,19 @@ export function initForms() {
         } else {
           form.innerHTML = `
             <div style="text-align:center;padding:2rem;">
-              <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;background:var(--color-primary,#2563eb);border-radius:50%;color:white;">✓</div>
-              <h3 style="font-size:1.15rem;font-weight:600;margin-bottom:4px;">Enviado com sucesso!</h3>
-              <p style="color:#666;font-size:0.9rem;">Em breve entraremos em contato.</p>
+              <div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;background:var(--primary,#0d254d);border-radius:50%;color:white;">✓</div>
+              <h3 style="font-size:1.15rem;font-weight:600;margin-bottom:4px;">Recebemos seu contato!</h3>
+              <p style="color:#666;font-size:0.9rem;">Nossa equipe responderá em breve.</p>
             </div>`;
         }
       } catch (err: any) {
         (window as any).dataLayer?.push({ event: 'form_error', form_source: 'form', form_id: formId, error: err.message });
 
         if (msgEl) {
-          msgEl.innerHTML = 'Erro ao enviar. Tente novamente mais tarde.';
+          msgEl.innerHTML = 'Não foi possível enviar. Tente novamente.';
           msgEl.style.display = 'block';
         } else {
-          alert('Erro ao enviar o formulário. Tente novamente mais tarde.');
+          alert('Não foi possível enviar. Tente novamente.');
         }
 
         if (submitBtn) {

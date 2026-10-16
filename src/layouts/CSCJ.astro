@@ -1,0 +1,56 @@
+---
+import Base from './Base.astro';
+import config from '../../config.json';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  canonical?: string;
+  noIndex?: boolean;
+  currentPath?: string;
+}
+
+const {
+  title,
+  description = '',
+  ogTitle,
+  ogDescription,
+  ogImage = '/images/entrada.png',
+  canonical,
+  noIndex = false,
+  currentPath = Astro.url.pathname,
+} = Astro.props;
+
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "EventVenue",
+  "name": "Casa Sagrado Coração de Jesus",
+  "url": "https://cscjeventos.com.br",
+  "telephone": "+55 11 97675-7963",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rua Euridice de Caccine, 50",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
+    "postalCode": "04844-630",
+    "addressCountry": "BR"
+  }
+};
+
+const canonicalUrl = canonical || `https://cscjeventos.com.br${currentPath}`;
+---
+<Base
+  title={title}
+  description={description}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  ogImage={ogImage}
+  canonical={canonicalUrl}
+  noIndex={noIndex}
+  jsonLd={localBusiness}
+>
+  <slot />
+</Base>

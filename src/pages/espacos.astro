@@ -1,0 +1,56 @@
+---
+import CSCJ from '../layouts/CSCJ.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Img from '../components/ui/Img.astro';
+
+const path = '/espacos';
+
+const cards = [
+  { img: 'natureza.png', alt: 'Natureza, jardins e trilhas', title: 'Natureza, jardins e trilhas', desc: 'Área verde preservada para dinâmicas, caminhadas e cerimônias ao ar livre.' },
+  { img: 'capela-celebracoes.jpg', alt: 'Espaços para celebrações', title: 'Espaços para celebrações', desc: 'Ambientes internos e externos perfeitos para cerimônias intimistas, bodas e renovação de votos.' },
+  { img: 'auditorio-espacos.png', alt: 'Salas e auditórios', title: 'Salas e auditórios', desc: 'Estrutura equipada para palestras, workshops, reuniões e treinamentos.' },
+  { img: 'acomodacoes.png', alt: 'Acomodações para grupos', title: 'Acomodações para grupos', desc: 'Hospedagem prática e acolhedora para retiros, formações e celebrações com pernoite.' },
+  { img: 'capela-espiritualidade.jpg', alt: 'Capela e espiritualidade', title: 'Capela e espiritualidade', desc: 'Ambientes sagrados e silenciosos, usados conforme a proposta do grupo.' },
+  { img: 'estacionamento.png', alt: 'Estacionamento amplo', title: 'Estacionamento amplo', desc: 'Recebemos carros e ônibus com conforto, facilitando logística de grupos.' },
+];
+---
+
+<CSCJ
+  title="Espaços — Casa Sagrado Coração de Jesus"
+  description="Conheça os ambientes da Casa: natureza, capela, auditórios, acomodações e mais."
+  ogDescription="Ambientes versáteis para retiros, eventos e celebrações."
+  ogImage="/images/entrada.png"
+  canonical="https://cscjeventos.com.br/espacos"
+  currentPath={path}
+>
+  <div class="flex min-h-screen flex-col">
+    <Header currentPath={path} />
+    <main class="flex-1">
+      <section class="container-prose py-20">
+        <header class="max-w-2xl">
+          <span class="eyebrow">Espaços</span>
+          <h1 class="mt-3 font-serif text-5xl text-primary text-balance">Ambientes pensados para cada momento.</h1>
+          <p class="mt-5 text-foreground/80">Da capela à cozinha, dos jardins ao auditório — cada espaço foi preparado para acolher grupos com versatilidade, conforto e propósito.</p>
+        </header>
+        <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {cards.map(card => (
+            <article class="group overflow-hidden rounded-md border border-border bg-card transition hover:shadow-lg">
+              <div class="aspect-[4/3] overflow-hidden">
+                <Img src={card.img} alt={card.alt} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" width={600} height={450} />
+              </div>
+              <div class="p-5">
+                <h3 class="font-serif text-xl text-primary">{card.title}</h3>
+                <p class="mt-2 text-sm text-foreground/75">{card.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div class="mt-14 flex justify-center">
+          <a href="/contato" class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-secondary">Agendar visita técnica</a>
+        </div>
+      </section>
+    </main>
+    <Footer currentPath={path} />
+  </div>
+</CSCJ>
