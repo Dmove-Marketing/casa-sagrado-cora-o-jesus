@@ -47,7 +47,9 @@ const links = [
     <div class="bio-conteudo">
 
       <header class="bio-cabecalho">
-        <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração de Jesus" class="bio-logo" width="840" height="324" />
+        <div class="bio-selo">
+          <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração de Jesus" width="840" height="324" />
+        </div>
         <p class="bio-tagline">Natureza, acolhimento e estrutura para eventos religiosos e corporativos</p>
       </header>
 
@@ -152,13 +154,17 @@ const links = [
         <p class="bio-aviso">Suas informações são usadas somente para retorno de orçamento.</p>
       </div>
 
-      <footer class="bio-rodape">
-        <span>© <span data-bio-ano></span> Casa Sagrado Coração</span>
-        <span>Desenvolvido por Dmove</span>
-      </footer>
-
     </div>
   </main>
+
+  <footer class="bio-rodape">
+    <div class="bio-rodape__conteudo">
+      <img class="bio-rodape__logo" src={`${P}/logo-casa-sagrado-coracao-rodape.webp`} alt="Casa Sagrado Coração, Missionárias do SCJ Cabrini" width="640" height="247" loading="lazy" />
+      <p class="bio-rodape__direitos">© <span data-bio-ano></span> Casa Sagrado Coração · Missionárias do SCJ Cabrini. Todos os direitos reservados.</p>
+      <p class="bio-rodape__credito">Desenvolvido por <a class="bio-rodape__dmove" href="https://dmove.com.br" target="_blank" rel="noopener"><img src={`${P}/logo-dmove.webp`} alt="Dmove" width="600" height="134" loading="lazy" /></a></p>
+    </div>
+  </footer>
+
 </Base>
 
 <style is:global>
@@ -172,6 +178,7 @@ const links = [
   --bio-marinho:     #0d254d;
   --bio-marinho-esc: #07192f;
   --bio-creme:       #f8f3eb;
+  --bio-creme-esc:   #efe5d4;
   --bio-fonte-titulo: "Playfair Display", Georgia, serif;
   --bio-fonte-texto:  "Nunito Sans", system-ui, sans-serif;
   --bio-raio:        8px;
@@ -218,8 +225,16 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── Cabeçalho ──────────────────────────────────────────── */
-.bio-cabecalho { text-align: center; }
-.bio-logo { width: 160px; height: auto; margin: 0 auto 16px; }
+.bio-cabecalho { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.bio-selo {
+  background: linear-gradient(180deg, #fffaf1 0%, var(--bio-creme-esc) 100%);
+  border-radius: 0 0 28px 28px;
+  padding: 16px 36px 18px;
+  box-shadow: 0 5px 0 -1px var(--bio-destaque), 0 16px 36px rgba(7,25,47,.3);
+  animation: bio-desce 1s cubic-bezier(.22,.61,.36,1) .1s both;
+}
+.bio-selo img { width: clamp(160px, 30vw, 200px); height: auto; display: block; }
+@keyframes bio-desce { from { transform: translateY(-120%); opacity: 0; } to { transform: none; opacity: 1; } }
 .bio-tagline {
   margin: 0;
   font-size: clamp(13px, 1.2vw, 15px);
@@ -354,9 +369,22 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Rodapé ─────────────────────────────────────────────── */
 .bio-rodape {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  font-size: 11px; opacity: .3; text-align: center;
+  background: var(--bio-marinho-esc);
+  color: rgba(248,243,235,.6);
+  padding: 44px 0 28px;
 }
+.bio-rodape__conteudo {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+}
+.bio-rodape__logo { width: 220px; margin-bottom: 8px; }
+.bio-rodape__direitos,
+.bio-rodape__credito { margin: 0; font-size: .8rem; font-family: var(--bio-fonte-texto); }
+.bio-rodape__credito { display: flex; align-items: center; gap: 10px; }
+.bio-rodape__dmove { display: block; transition: opacity .25s; }
+.bio-rodape__dmove:hover { opacity: .75; }
+.bio-rodape__dmove img { width: 64px; height: auto; }
+@media (max-width: 480px) { .bio-rodape__logo { width: 180px; } }
 
 /* ── Flatpickr: adapta ao tema escuro ───────────────────── */
 .flatpickr-calendar {
