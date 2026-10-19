@@ -34,6 +34,16 @@ export const tipoEventoOptions: { value: string; label: string }[] = [
   { value: 'Outro',                                label: 'Outro' },
 ];
 
+// Opções específicas para LPs religiosas (/bio, /eventos-religiosos)
+export const tipoEventoReligiososOptions: { value: string; label: string }[] = [
+  { value: 'Retiro espiritual',                    label: 'Retiro espiritual' },
+  { value: 'Encontro de paróquia ou pastoral',     label: 'Encontro de paróquia ou pastoral' },
+  { value: 'Encontro de jovens',                   label: 'Encontro de jovens' },
+  { value: 'Encontro de casais ou famílias',       label: 'Encontro de casais ou famílias' },
+  { value: 'Formação religiosa',                   label: 'Formação religiosa' },
+  { value: 'Outro',                                label: 'Outro' },
+];
+
 export const trackingParamKeys = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term',
   'utm_content', 'utm_id', 'gclid', 'gbraid', 'wbraid',

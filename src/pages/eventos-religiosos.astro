@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
+import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -15,6 +16,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   ogDescription="Um espaço de paz para viver a fé e fortalecer vínculos. Retiros, encontros e formações religiosas com natureza e hospedagem."
   ogImage={`${P}/hero-vista-aerea-casa.webp`}
   canonical="https://cscjeventos.com.br/eventos-religiosos"
+  whatsAppTipoEventoOptions={tipoEventoReligiososOptions}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />

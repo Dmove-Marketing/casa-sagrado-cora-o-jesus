@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
+import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -12,21 +13,23 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
   description="Natureza, acolhimento e estrutura para eventos religiosos e corporativos."
   ogImage={`${P}/hero-vista-aerea-casa.webp`}
   canonical="https://cscjeventos.com.br/bio"
+  whatsAppTipoEventoOptions={tipoEventoReligiososOptions}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Lora:ital,wght@0,400;1,400;1,500&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   </Fragment>
 
-<!-- SVG sprites (mesmos da página eventos-religiosos) -->
+<!-- SVG sprites -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="bio-cruz" viewBox="19 19.5 90.5 103"><path fill="currentColor" d="M16.0938 63.5938Q14.6094 60.4688 11.3281 57.3438Q14.5312 54.3750 16.0938 51.2500L22.5781 55.8594L22.5781 58.9844ZM73.8281 58.9062L73.8281 55.7812L80.2344 51.2500Q81.7969 54.3750 85.0000 57.3438Q81.7969 60.4688 80.2344 63.5938ZM54.3750 88.5938Q51.4062 90.1562 48.1250 93.3594Q45.1562 90.1562 42.1094 88.5938L46.7188 82.1094L49.8438 82.1094ZM49.7656 17.7344L46.6406 17.7344L42.1094 11.2500Q45.1562 9.6875 48.1250 6.4062Q51.3281 9.6875 54.3750 11.2500ZM53.9062 63.1250L69.5312 63.1250L83.7500 71.7188Q84.3750 64.5312 92.7344 57.2656Q84.3750 50.1562 83.7500 43.0469L69.5312 51.7188L53.9062 51.7188L53.9062 22.0312L62.5000 7.8125Q55.3125 7.0312 48.1250 -1.2500Q41.0156 7.0312 33.9062 7.8125L42.5000 22.0312L42.5000 51.7188L26.8750 51.7188L12.6562 43.0469Q11.9531 50.1562 3.5938 57.3438Q11.9531 64.5312 12.6562 71.7188L26.8750 63.1250L42.5000 63.1250L42.5000 77.7344L33.9062 92.0312Q41.0156 92.8125 48.1250 101.0938Q55.3125 92.8125 62.5000 92.0312L53.9062 77.7344ZM46.4062 69.8438L46.4062 58.9844L38.4375 58.9844L38.4375 55.8594L46.4062 55.8594L46.4062 29.6094L50.0781 29.6094L50.0781 55.8594L57.9688 55.8594L57.9688 58.9844L50.0781 58.9844L50.0781 69.8438Z" transform="translate(16.40625 121.09375) scale(1 -1)"/></symbol>
 </svg>
 
-<!-- HERO / PERFIL -->
-<section class="bio-hero">
-  <div class="bio-hero__foto">
+<!-- SEÇÃO ÚNICA -->
+<section class="bio-section">
+  <!-- Foto de fundo -->
+  <div class="bio-foto">
     <img
       src={`${P}/hero-vista-aerea-casa.webp`}
       alt="Vista aérea da Casa Sagrado Coração"
@@ -35,118 +38,116 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
     />
   </div>
 
-  <div class="bio-hero__conteudo">
-    <!-- Logo selo -->
+  <!-- Conteúdo -->
+  <div class="bio-inner">
+    <!-- Logo no topo -->
     <div class="bio-selo">
       <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração" width="840" height="324" />
     </div>
 
-    <!-- Tagline -->
-    <p class="bio-pitch">
-      <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
-      Natureza, acolhimento e estrutura para eventos religiosos e corporativos
-    </p>
+    <!-- Corpo: info à esquerda, formulário à direita -->
+    <div class="bio-main">
+      <!-- Lado esquerdo -->
+      <div class="bio-info">
+        <p class="bio-pitch">
+          <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
+          Natureza, acolhimento e estrutura para eventos religiosos e corporativos
+        </p>
 
-    <!-- Botões de link -->
-    <nav class="bio-links" aria-label="Links">
-      <a class="bio-link bio-link--destaque" href="https://cscjeventos.com.br/">
-        <span>Visitar o site</span>
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
-      </a>
-      <a class="bio-link" href="https://cscjeventos.com.br/eventos-religiosos">
-        <span>Eventos Religiosos</span>
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
-      </a>
-    </nav>
+        <nav class="bio-links" aria-label="Links">
+          <a class="bio-link bio-link--destaque" href="https://cscjeventos.com.br/">
+            <span>Visitar o site</span>
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
+          </a>
+          <a class="bio-link" href="https://cscjeventos.com.br/eventos-religiosos">
+            <span>Eventos Religiosos</span>
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
+          </a>
+        </nav>
+      </div>
 
-    <!-- Âncora para o formulário -->
-    <a class="bio-cta-form" href="#orcamento">
-      Solicite um orçamento
-      <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3v12M3 9l6 6 6-6"/></svg>
-    </a>
-  </div>
-</section>
+      <!-- Lado direito: formulário -->
+      <div class="bio-form-wrap">
+        <div class="bio-form-intro">
+          <span class="bio-legenda">
+            <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
+            Orçamento
+          </span>
+          <h2 class="bio-titulo">Vamos preparar o próximo encontro do seu grupo?</h2>
+          <p>Preencha o formulário e em breve nossa equipe entrará em contato com você.</p>
+        </div>
 
-<!-- FORMULÁRIO -->
-<section class="bio-form-section" id="orcamento">
-  <div class="bio-form-wrap">
-    <div class="bio-form-intro">
-      <span class="bio-legenda">
-        <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
-        Orçamento
-      </span>
-      <h2 class="bio-titulo">Vamos preparar o próximo encontro do seu grupo?</h2>
-      <p>Preencha o formulário e em breve nossa equipe entrará em contato com você.</p>
+        <form
+          class="bio-formulario"
+          data-form-id="cscj-bio"
+          data-submit-url={submitUrl}
+          data-fonte="Landing page/bio"
+          data-project={project}
+          novalidate
+        >
+          <input type="text" name="website" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="off" />
+
+          <div class="bio-campo bio-campo--inteiro">
+            <label for="bio-nome">Nome</label>
+            <input id="bio-nome" name="nome" type="text" autocomplete="name" required />
+          </div>
+          <div class="bio-campo">
+            <label for="bio-telefone">Telefone</label>
+            <input id="bio-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required />
+          </div>
+          <div class="bio-campo">
+            <label for="bio-email">E-mail</label>
+            <input id="bio-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="bio-campo bio-campo--inteiro">
+            <label for="bio-grupo">Igreja ou grupo</label>
+            <input id="bio-grupo" name="grupo" type="text" autocomplete="organization" required />
+          </div>
+          <div class="bio-campo">
+            <label for="bio-tipo">Tipo de evento</label>
+            <select id="bio-tipo" name="tipo_evento" required>
+              <option value="" selected disabled>Selecione</option>
+              <option>Retiro espiritual</option>
+              <option>Encontro de paróquia ou pastoral</option>
+              <option>Encontro de jovens</option>
+              <option>Encontro de casais ou famílias</option>
+              <option>Formação religiosa</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="bio-campo">
+            <label for="bio-hospedagem">Hospedagem</label>
+            <select id="bio-hospedagem" name="hospedagem" required>
+              <option value="" selected disabled>Selecione</option>
+              <option>Com hospedagem</option>
+              <option>Sem hospedagem</option>
+            </select>
+          </div>
+          <div class="bio-campo">
+            <label for="bio-data">Data do evento</label>
+            <input id="bio-data" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
+          </div>
+          <div class="bio-campo">
+            <label for="bio-participantes">Nº de participantes</label>
+            <input id="bio-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
+          </div>
+
+          <button class="bio-btn-submit form-submit" type="button">
+            <span class="btn-text">Solicitar orçamento</span>
+            <span class="btn-loading" style="display:none">Enviando...</span>
+          </button>
+        </form>
+      </div>
     </div>
-
-    <form
-      class="bio-formulario"
-      data-form-id="cscj-bio"
-      data-submit-url={submitUrl}
-      data-fonte="Landing page/bio"
-      data-project={project}
-      novalidate
-    >
-      <input type="text" name="website" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="off" />
-
-      <div class="bio-campo bio-campo--inteiro">
-        <label for="bio-nome">Nome</label>
-        <input id="bio-nome" name="nome" type="text" autocomplete="name" required />
-      </div>
-      <div class="bio-campo">
-        <label for="bio-telefone">Telefone</label>
-        <input id="bio-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required />
-      </div>
-      <div class="bio-campo">
-        <label for="bio-email">E-mail</label>
-        <input id="bio-email" name="email" type="email" autocomplete="email" required />
-      </div>
-      <div class="bio-campo bio-campo--inteiro">
-        <label for="bio-grupo">Igreja ou grupo</label>
-        <input id="bio-grupo" name="grupo" type="text" autocomplete="organization" required />
-      </div>
-      <div class="bio-campo">
-        <label for="bio-tipo">Tipo de evento</label>
-        <select id="bio-tipo" name="tipo_evento" required>
-          <option value="" selected disabled>Selecione</option>
-          <option>Retiro espiritual</option>
-          <option>Encontro de paróquia ou pastoral</option>
-          <option>Encontro de jovens</option>
-          <option>Encontro de casais ou famílias</option>
-          <option>Formação religiosa</option>
-          <option>Outro</option>
-        </select>
-      </div>
-      <div class="bio-campo">
-        <label for="bio-hospedagem">Hospedagem</label>
-        <select id="bio-hospedagem" name="hospedagem" required>
-          <option value="" selected disabled>Selecione</option>
-          <option>Com hospedagem</option>
-          <option>Sem hospedagem</option>
-        </select>
-      </div>
-      <div class="bio-campo">
-        <label for="bio-data">Data do evento</label>
-        <input id="bio-data" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
-      </div>
-      <div class="bio-campo">
-        <label for="bio-participantes">Nº de participantes</label>
-        <input id="bio-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
-      </div>
-
-      <button class="bio-btn-submit form-submit" type="button">
-        <span class="btn-text">Solicitar orçamento</span>
-        <span class="btn-loading" style="display:none">Enviando...</span>
-      </button>
-    </form>
   </div>
 </section>
 
-<!-- RODAPÉ -->
+<!-- RODAPÉ (idêntico ao de /eventos-religiosos) -->
 <footer class="bio-rodape">
-  <div class="bio-rodape__inner">
-    <p>© <span data-bio-ano></span> Casa Sagrado Coração · Missionárias do SCJ Cabrini</p>
-    <p>Desenvolvido por <a href="https://dmove.com.br" target="_blank" rel="noopener">Dmove</a></p>
+  <div class="bio-rodape__conteudo">
+    <img class="bio-rodape__logo" src={`${P}/logo-casa-sagrado-coracao-rodape.webp`} alt="Casa Sagrado Coração, Missionárias do SCJ Cabrini" width="640" height="247" loading="lazy" />
+    <p class="bio-rodape__direitos">© <span data-bio-ano></span> Casa Sagrado Coração · Missionárias do SCJ Cabrini. Todos os direitos reservados.</p>
+    <p class="bio-rodape__credito">Desenvolvido por <a class="bio-rodape__dmove" href="https://dmove.com.br" target="_blank" rel="noopener"><img src={`${P}/logo-dmove.webp`} alt="Dmove" width="600" height="134" loading="lazy" /></a></p>
   </div>
 </footer>
 
@@ -155,7 +156,6 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
 <style is:global>
 /* =========================================================
    Bio — Casa Sagrado Coração
-   Identidade visual de /eventos-religiosos
    ========================================================= */
 :root {
   --bio-marinho: #0d254d;
@@ -166,88 +166,94 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
   --bio-creme-esc: #efe5d4;
   --bio-texto: #1d2533;
   --bio-texto-suave: #586273;
-  --bio-linha: rgba(13, 37, 77, .14);
   --bio-fonte-titulo: "Playfair Display", Georgia, serif;
   --bio-fonte-apoio: "Lora", Georgia, serif;
   --bio-fonte-texto: "Nunito Sans", system-ui, sans-serif;
   --bio-trans: cubic-bezier(.22, .61, .36, 1);
 }
 
-/* ===== HERO ===== */
-.bio-hero {
+/* ===== SEÇÃO ÚNICA ===== */
+.bio-section {
   position: relative;
   min-height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--bio-marinho-esc);
   overflow: hidden;
 }
-.bio-hero__foto {
+
+.bio-foto {
   position: absolute;
   inset: 0;
 }
-.bio-hero__foto img {
+.bio-foto img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 40%;
   animation: bio-zoom 16s var(--bio-trans) both;
 }
 @keyframes bio-zoom { from { transform: scale(1.07); } to { transform: none; } }
-.bio-hero__foto::after {
+.bio-foto::after {
   content: "";
   position: absolute; inset: 0;
   background: linear-gradient(
-    180deg,
-    rgba(7,25,47,.55) 0%,
-    rgba(7,25,47,.38) 40%,
-    rgba(7,25,47,.72) 100%
+    135deg,
+    rgba(7,25,47,.75) 0%,
+    rgba(7,25,47,.55) 50%,
+    rgba(7,25,47,.82) 100%
   );
 }
 
-.bio-hero__conteudo {
+/* Wrapper interno */
+.bio-inner {
   position: relative; z-index: 2;
+  max-width: 1000px; margin: 0 auto;
+  padding: 0 24px clamp(56px, 8vw, 96px);
   display: flex; flex-direction: column; align-items: center;
-  gap: 28px;
-  padding: 60px 24px 80px;
-  max-width: 520px;
-  width: 100%;
-  text-align: center;
-  color: var(--bio-creme);
+  gap: clamp(32px, 5vw, 52px);
 }
 
-/* Selo logo */
+/* Logo no topo */
 .bio-selo {
   background: linear-gradient(180deg, #fffaf1 0%, var(--bio-creme-esc) 100%);
   border-radius: 0 0 28px 28px;
   padding: 16px 36px 18px;
   box-shadow: 0 5px 0 -1px var(--bio-ouro), 0 16px 36px rgba(7,25,47,.3);
   animation: bio-desce 1s var(--bio-trans) .1s both;
-  margin-top: -60px;
+  align-self: center;
 }
 .bio-selo img {
-  width: clamp(160px, 36vw, 200px);
+  width: clamp(160px, 30vw, 200px);
   height: auto; display: block;
 }
 @keyframes bio-desce { from { transform: translateY(-120%); opacity: 0; } to { transform: none; opacity: 1; } }
 
-/* Pitch */
+/* Grade principal */
+.bio-main {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: clamp(36px, 6vw, 72px);
+  align-items: start;
+}
+
+/* Lado esquerdo */
+.bio-info {
+  color: var(--bio-creme);
+  display: flex; flex-direction: column;
+  gap: 28px;
+  padding-top: 12px;
+  animation: bio-sobe .9s var(--bio-trans) .45s both;
+}
+
 .bio-pitch {
-  display: flex; align-items: flex-start; justify-content: center; gap: 12px;
-  font: italic 500 clamp(1.05rem, 3vw, 1.2rem)/1.4 var(--bio-fonte-apoio);
+  display: flex; align-items: flex-start; gap: 12px;
+  font: italic 500 clamp(1.05rem, 2vw, 1.25rem)/1.45 var(--bio-fonte-apoio);
   color: rgba(248,243,235,.92);
-  max-width: 34em;
   margin: 0;
   text-shadow: 0 1px 8px rgba(7,25,47,.5);
-  animation: bio-sobe .9s var(--bio-trans) .55s both;
 }
-.bio-pitch .bio-cruz { width: 18px; height: 20px; flex: none; margin-top: 3px; color: var(--bio-ouro-claro); }
-@keyframes bio-sobe { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.bio-pitch .bio-cruz { width: 18px; height: 20px; flex: none; margin-top: 4px; color: var(--bio-ouro-claro); }
 
-/* Link buttons */
 .bio-links {
   display: flex; flex-direction: column; gap: 14px;
-  width: 100%; max-width: 380px;
-  animation: bio-sobe .9s var(--bio-trans) .75s both;
 }
 .bio-link {
   display: flex; align-items: center; justify-content: space-between;
@@ -272,56 +278,42 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
 .bio-link svg { flex: none; opacity: .7; }
 .bio-link--destaque svg { opacity: 1; }
 
-/* CTA form */
-.bio-cta-form {
-  display: inline-flex; align-items: center; gap: 8px;
-  font: 600 .82rem/1 var(--bio-fonte-texto); letter-spacing: .08em; text-transform: uppercase;
-  color: var(--bio-ouro-claro); text-decoration: none;
-  border-bottom: 1px solid rgba(227,189,118,.4); padding-bottom: 3px;
-  transition: color .3s, border-color .3s;
-  animation: bio-sobe .9s var(--bio-trans) .9s both;
-}
-.bio-cta-form:hover { color: var(--bio-creme); border-color: rgba(248,243,235,.4); }
+@keyframes bio-sobe { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 
-/* Cruz utilitária */
-.bio-cruz { width: 14px; height: 16px; flex: none; }
-
-/* ===== FORMULÁRIO ===== */
-.bio-form-section {
-  background: var(--bio-marinho);
-  padding: clamp(64px, 10vw, 120px) 24px;
-}
+/* Lado direito */
 .bio-form-wrap {
-  max-width: 860px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(48px, 7vw, 96px);
-  align-items: start;
+  display: flex; flex-direction: column;
+  gap: 20px;
+  animation: bio-sobe .9s var(--bio-trans) .6s both;
 }
-.bio-form-intro {
-  color: rgba(248,243,235,.9);
-  position: sticky; top: 32px;
-}
+
+.bio-form-intro { color: rgba(248,243,235,.9); }
+
 .bio-legenda {
   display: inline-flex; align-items: center; gap: 10px;
   font: italic 500 1rem/1.2 var(--bio-fonte-apoio);
-  color: var(--bio-ouro-claro); margin-bottom: 20px;
+  color: var(--bio-ouro-claro); margin-bottom: 16px;
 }
 .bio-legenda .bio-cruz { color: var(--bio-ouro-claro); width: 18px; height: 20px; }
+
 .bio-titulo {
-  font: 500 clamp(1.9rem, 3.5vw, 2.8rem)/1.08 var(--bio-fonte-titulo);
-  color: var(--bio-creme); margin: 0 0 20px;
+  font: 500 clamp(1.6rem, 2.8vw, 2.2rem)/1.1 var(--bio-fonte-titulo);
+  color: var(--bio-creme); margin: 0 0 14px;
   letter-spacing: -.01em;
 }
-.bio-titulo em { font-style: italic; font-weight: 600; color: var(--bio-ouro-claro); }
 .bio-form-intro > p {
-  font-size: clamp(.95rem, 1.2vw, 1.05rem);
+  font-size: .95rem;
   color: rgba(248,243,235,.7);
   line-height: 1.45; margin: 0;
 }
 
+/* Cruz utilitária */
+.bio-cruz { width: 14px; height: 16px; flex: none; }
+
 /* Grade do formulário */
 .bio-formulario {
   background: var(--bio-creme);
-  padding: clamp(22px, 3vw, 36px);
+  padding: clamp(20px, 3vw, 32px);
   border-radius: 6px;
   border-top: 4px solid var(--bio-ouro);
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
@@ -364,33 +356,36 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
 /* ===== RODAPÉ ===== */
 .bio-rodape {
   background: var(--bio-marinho-esc);
-  padding: 28px 24px;
-  color: rgba(248,243,235,.5);
+  color: rgba(248,243,235,.6);
+  padding: 44px 0 28px;
 }
-.bio-rodape__inner {
-  max-width: 860px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; flex-wrap: wrap;
-  font: 400 .78rem/1.3 var(--bio-fonte-texto);
+.bio-rodape__conteudo {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
 }
-.bio-rodape p { margin: 0; }
-.bio-rodape a { color: var(--bio-ouro-claro); text-decoration: none; }
-.bio-rodape a:hover { color: var(--bio-creme); }
+.bio-rodape__logo { width: 220px; margin-bottom: 8px; }
+.bio-rodape__direitos, .bio-rodape__credito {
+  margin: 0; font-size: .8rem; font-family: var(--bio-fonte-texto);
+}
+.bio-rodape__credito { display: flex; align-items: center; gap: 10px; }
+.bio-rodape__dmove { display: block; transition: opacity .25s; }
+.bio-rodape__dmove:hover { opacity: .75; }
+.bio-rodape__dmove img { width: 64px; height: auto; }
 
 /* ===== RESPONSIVO ===== */
-@media (max-width: 720px) {
-  .bio-form-wrap { grid-template-columns: 1fr; gap: 32px; }
-  .bio-form-intro { position: static; text-align: center; }
-  .bio-legenda { justify-content: center; }
-  .bio-rodape__inner { flex-direction: column; text-align: center; gap: 6px; }
+@media (max-width: 760px) {
+  .bio-main { grid-template-columns: 1fr; }
+  .bio-info { align-items: flex-start; }
 }
 @media (max-width: 480px) {
   .bio-formulario { grid-template-columns: 1fr; gap: 12px; padding: 18px 16px; }
   .bio-campo--inteiro { grid-column: auto; }
+  .bio-rodape__logo { width: 180px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bio-hero__foto img,
-  .bio-selo, .bio-pitch, .bio-links, .bio-cta-form { animation: none !important; }
+  .bio-foto img,
+  .bio-selo, .bio-info, .bio-form-wrap { animation: none !important; }
 }
 </style>
 
