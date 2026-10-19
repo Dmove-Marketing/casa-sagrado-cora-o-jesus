@@ -44,14 +44,13 @@ const links = [
       </picture>
     </div>
 
+    <div class="bio-selo">
+      <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração de Jesus" width="840" height="324" />
+    </div>
+
     <div class="bio-conteudo">
 
-      <header class="bio-cabecalho">
-        <div class="bio-selo">
-          <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração de Jesus" width="840" height="324" />
-        </div>
-        <p class="bio-tagline">Natureza, acolhimento e estrutura para eventos religiosos e corporativos</p>
-      </header>
+      <p class="bio-tagline">Natureza, acolhimento e estrutura para eventos religiosos e corporativos</p>
 
       <nav class="bio-links" aria-label="Links da Casa Sagrado Coração">
         {links.map((l) => (
@@ -157,7 +156,7 @@ const links = [
     </div>
   </main>
 
-  <footer class="bio-rodape">
+  <footer class="bio-rodape" style="position:relative;z-index:1">
     <div class="bio-rodape__conteudo">
       <img class="bio-rodape__logo" src={`${P}/logo-casa-sagrado-coracao-rodape.webp`} alt="Casa Sagrado Coração, Missionárias do SCJ Cabrini" width="640" height="247" loading="lazy" />
       <p class="bio-rodape__direitos">© <span data-bio-ano></span> Casa Sagrado Coração · Missionárias do SCJ Cabrini. Todos os direitos reservados.</p>
@@ -202,7 +201,7 @@ a { color: inherit; text-decoration: none; }
   position: relative; isolation: isolate;
   min-height: 100svh;
   display: flex; flex-direction: column; align-items: center;
-  padding: clamp(48px, 7vw, 72px) clamp(20px, 5vw, 40px) clamp(40px, 5vw, 56px);
+  padding: 0 clamp(20px, 5vw, 40px) clamp(40px, 5vw, 56px);
 }
 
 /* ── Fundo fixo ─────────────────────────────────────────── */
@@ -222,19 +221,21 @@ a { color: inherit; text-decoration: none; }
 .bio-conteudo {
   width: 100%; max-width: 440px;
   display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 3.5vw, 36px);
+  padding-top: clamp(24px, 3.5vw, 36px);
 }
 
-/* ── Cabeçalho ──────────────────────────────────────────── */
-.bio-cabecalho { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+/* ── Selo / logo ────────────────────────────────────────── */
 .bio-selo {
+  position: relative; z-index: 3; align-self: center;
+  display: block;
   background: linear-gradient(180deg, #fffaf1 0%, var(--bio-creme-esc) 100%);
-  border-radius: 0 0 28px 28px;
-  padding: 16px 36px 18px;
-  box-shadow: 0 5px 0 -1px var(--bio-destaque), 0 16px 36px rgba(7,25,47,.3);
-  animation: bio-desce 1s cubic-bezier(.22,.61,.36,1) .1s both;
+  border-radius: 0 0 34px 34px;
+  padding: clamp(16px, 2vw, 22px) clamp(32px, 3.6vw, 50px) clamp(18px, 2.2vw, 26px);
+  box-shadow: 0 6px 0 -1px var(--bio-destaque), 0 18px 40px rgba(7,25,47,.25);
+  animation: bio-desce 1.1s cubic-bezier(.22,.61,.36,1) .1s both;
 }
-.bio-selo img { width: clamp(160px, 30vw, 200px); height: auto; display: block; }
-@keyframes bio-desce { from { transform: translateY(-120%); opacity: 0; } to { transform: none; opacity: 1; } }
+.bio-selo img { width: clamp(180px, 16vw, 230px); height: auto; display: block; }
+@keyframes bio-desce { from { transform: translateY(-110%); } to { transform: none; } }
 .bio-tagline {
   margin: 0;
   font-size: clamp(13px, 1.2vw, 15px);
