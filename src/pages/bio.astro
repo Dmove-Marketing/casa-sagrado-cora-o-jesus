@@ -6,6 +6,21 @@ import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
 const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
+
+const links = [
+  {
+    href:     'https://cscjeventos.com.br/',
+    label:    'Site oficial',
+    sublabel: 'cscjeventos.com.br',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  },
+  {
+    href:     'https://cscjeventos.com.br/eventos-religiosos',
+    label:    'Eventos Religiosos',
+    sublabel: 'Retiros, encontros e formações',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 8h20"/></svg>`,
+  },
+];
 ---
 
 <Base
@@ -18,374 +33,353 @@ const P = 'https://media.dmove.com.br/clients/sagrado-coracao/photos';
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Lora:ital,wght@0,400;1,400;1,500&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Nunito+Sans:wght@400;600;700&display=swap" />
   </Fragment>
 
-<!-- SVG sprites -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="bio-cruz" viewBox="19 19.5 90.5 103"><path fill="currentColor" d="M16.0938 63.5938Q14.6094 60.4688 11.3281 57.3438Q14.5312 54.3750 16.0938 51.2500L22.5781 55.8594L22.5781 58.9844ZM73.8281 58.9062L73.8281 55.7812L80.2344 51.2500Q81.7969 54.3750 85.0000 57.3438Q81.7969 60.4688 80.2344 63.5938ZM54.3750 88.5938Q51.4062 90.1562 48.1250 93.3594Q45.1562 90.1562 42.1094 88.5938L46.7188 82.1094L49.8438 82.1094ZM49.7656 17.7344L46.6406 17.7344L42.1094 11.2500Q45.1562 9.6875 48.1250 6.4062Q51.3281 9.6875 54.3750 11.2500ZM53.9062 63.1250L69.5312 63.1250L83.7500 71.7188Q84.3750 64.5312 92.7344 57.2656Q84.3750 50.1562 83.7500 43.0469L69.5312 51.7188L53.9062 51.7188L53.9062 22.0312L62.5000 7.8125Q55.3125 7.0312 48.1250 -1.2500Q41.0156 7.0312 33.9062 7.8125L42.5000 22.0312L42.5000 51.7188L26.8750 51.7188L12.6562 43.0469Q11.9531 50.1562 3.5938 57.3438Q11.9531 64.5312 12.6562 71.7188L26.8750 63.1250L42.5000 63.1250L42.5000 77.7344L33.9062 92.0312Q41.0156 92.8125 48.1250 101.0938Q55.3125 92.8125 62.5000 92.0312L53.9062 77.7344ZM46.4062 69.8438L46.4062 58.9844L38.4375 58.9844L38.4375 55.8594L46.4062 55.8594L46.4062 29.6094L50.0781 29.6094L50.0781 55.8594L57.9688 55.8594L57.9688 58.9844L50.0781 58.9844L50.0781 69.8438Z" transform="translate(16.40625 121.09375) scale(1 -1)"/></symbol>
-</svg>
-
-<!-- SEÇÃO ÚNICA -->
-<section class="bio-section">
-  <!-- Foto de fundo -->
-  <div class="bio-foto">
-    <img
-      src={`${P}/hero-vista-aerea-casa.webp`}
-      alt="Vista aérea da Casa Sagrado Coração"
-      width="1824" height="1223"
-      loading="eager" fetchpriority="high"
-    />
-  </div>
-
-  <!-- Conteúdo -->
-  <div class="bio-inner">
-    <!-- Logo no topo -->
-    <div class="bio-selo">
-      <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração" width="840" height="324" />
+  <main class="bio">
+    <div class="bio-fundo" aria-hidden="true">
+      <picture>
+        <source media="(min-width: 768px)" srcset={`${P}/hero-vista-aerea-casa.webp`} />
+        <img src={`${P}/hero-vista-aerea-casa.webp`} alt="" width="1824" height="1223" fetchpriority="high" />
+      </picture>
     </div>
 
-    <!-- Corpo: info à esquerda, formulário à direita -->
-    <div class="bio-main">
-      <!-- Lado esquerdo -->
-      <div class="bio-info">
-        <p class="bio-pitch">
-          <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
-          Natureza, acolhimento e estrutura para eventos religiosos e corporativos
-        </p>
+    <div class="bio-conteudo">
 
-        <nav class="bio-links" aria-label="Links">
-          <a class="bio-link bio-link--destaque" href="https://cscjeventos.com.br/">
-            <span>Visitar o site</span>
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
-          </a>
-          <a class="bio-link" href="https://cscjeventos.com.br/eventos-religiosos">
-            <span>Eventos Religiosos</span>
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg>
-          </a>
-        </nav>
-      </div>
+      <header class="bio-cabecalho">
+        <img src={`${P}/logo-casa-sagrado-coracao.webp`} alt="Casa Sagrado Coração de Jesus" class="bio-logo" width="840" height="324" />
+        <p class="bio-tagline">Natureza, acolhimento e estrutura para eventos religiosos e corporativos</p>
+      </header>
 
-      <!-- Lado direito: formulário -->
+      <nav class="bio-links" aria-label="Links da Casa Sagrado Coração">
+        {links.map((l) => (
+          <a class="bio-link" href={l.href}>
+            <span class="bio-link-icone" set:html={l.icon} />
+            <span class="bio-link-texto">
+              <span class="bio-link-label">{l.label}</span>
+              <span class="bio-link-sub">{l.sublabel}</span>
+            </span>
+          </a>
+        ))}
+      </nav>
+
       <div class="bio-form-wrap">
-        <div class="bio-form-intro">
-          <span class="bio-legenda">
-            <svg class="bio-cruz" aria-hidden="true"><use href="#bio-cruz"/></svg>
-            Orçamento
-          </span>
-          <h2 class="bio-titulo">Vamos preparar o próximo encontro do seu grupo?</h2>
-          <p>Preencha o formulário e em breve nossa equipe entrará em contato com você.</p>
-        </div>
-
+        <p class="bio-form-titulo">Solicite orçamento</p>
         <form
-          class="bio-formulario"
+          class="bio-form"
           data-form-id="cscj-bio"
           data-submit-url={submitUrl}
           data-fonte="Landing page/bio"
           data-project={project}
+          data-grid-id="bio-form-campos"
+          data-success-id="bio-form-success"
           novalidate
         >
-          <input type="text" name="website" style="display:none" aria-hidden="true" tabindex="-1" autocomplete="off" />
+          <input name="website" type="text" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="bio-campos" id="bio-form-campos">
 
-          <div class="bio-campo bio-campo--inteiro">
-            <label for="bio-nome">Nome</label>
-            <input id="bio-nome" name="nome" type="text" autocomplete="name" required />
-          </div>
-          <div class="bio-campo">
-            <label for="bio-telefone">Telefone</label>
-            <input id="bio-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required />
-          </div>
-          <div class="bio-campo">
-            <label for="bio-email">E-mail</label>
-            <input id="bio-email" name="email" type="email" autocomplete="email" required />
-          </div>
-          <div class="bio-campo bio-campo--inteiro">
-            <label for="bio-grupo">Igreja ou grupo</label>
-            <input id="bio-grupo" name="grupo" type="text" autocomplete="organization" required />
-          </div>
-          <div class="bio-campo">
-            <label for="bio-tipo">Tipo de evento</label>
-            <select id="bio-tipo" name="tipo_evento" required>
-              <option value="" selected disabled>Selecione</option>
-              <option>Retiro espiritual</option>
-              <option>Encontro de paróquia ou pastoral</option>
-              <option>Encontro de jovens</option>
-              <option>Encontro de casais ou famílias</option>
-              <option>Formação religiosa</option>
-              <option>Outro</option>
-            </select>
-          </div>
-          <div class="bio-campo">
-            <label for="bio-hospedagem">Hospedagem</label>
-            <select id="bio-hospedagem" name="hospedagem" required>
-              <option value="" selected disabled>Selecione</option>
-              <option>Com hospedagem</option>
-              <option>Sem hospedagem</option>
-            </select>
-          </div>
-          <div class="bio-campo">
-            <label for="bio-data">Data do evento</label>
-            <input id="bio-data" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
-          </div>
-          <div class="bio-campo">
-            <label for="bio-participantes">Nº de participantes</label>
-            <input id="bio-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
-          </div>
+            <div class="bio-campo bio-campo-full">
+              <label for="form-field-nome">Nome</label>
+              <input id="form-field-nome" name="nome" type="text" autocomplete="name" required />
+            </div>
 
-          <button class="bio-btn-submit form-submit" type="button">
-            <span class="btn-text">Solicitar orçamento</span>
-            <span class="btn-loading" style="display:none">Enviando...</span>
-          </button>
+            <div class="bio-campo">
+              <label for="form-field-telefone">Telefone</label>
+              <input id="form-field-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" required />
+            </div>
+
+            <div class="bio-campo">
+              <label for="form-field-email">E-mail</label>
+              <input id="form-field-email" name="email" type="email" autocomplete="email" required />
+            </div>
+
+            <div class="bio-campo bio-campo-full">
+              <label for="form-field-grupo">Igreja ou grupo</label>
+              <input id="form-field-grupo" name="grupo" type="text" autocomplete="organization" required />
+            </div>
+
+            <div class="bio-campo">
+              <label for="form-field-tipo_evento">Tipo de evento</label>
+              <div class="bio-select-wrap">
+                <select id="form-field-tipo_evento" name="tipo_evento" required>
+                  <option value="" selected disabled>Selecione</option>
+                  {tipoEventoReligiososOptions.map((o) => (
+                    <option value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+                <svg class="bio-select-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+
+            <div class="bio-campo">
+              <label for="form-field-hospedagem">Hospedagem</label>
+              <div class="bio-select-wrap">
+                <select id="form-field-hospedagem" name="hospedagem" required>
+                  <option value="" selected disabled>Selecione</option>
+                  <option>Com hospedagem</option>
+                  <option>Sem hospedagem</option>
+                </select>
+                <svg class="bio-select-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+
+            <div class="bio-campo">
+              <label for="form-field-data_evento">Data do evento</label>
+              <input id="form-field-data_evento" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
+            </div>
+
+            <div class="bio-campo">
+              <label for="form-field-participantes">Nº de participantes</label>
+              <input id="form-field-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
+            </div>
+
+            <div class="bio-campo bio-campo-full bio-acao">
+              <button class="bio-btn form-submit" type="button">
+                <span class="btn-text">Solicitar orçamento</span>
+                <span class="btn-loading" style="display:none">Enviando...</span>
+              </button>
+            </div>
+
+          </div>
         </form>
+
+        <div id="bio-form-success" class="bio-success">
+          <div class="bio-success-icon">✓</div>
+          <p class="bio-success-titulo">Orçamento enviado!</p>
+          <p class="bio-success-sub">Nossa equipe entrará em contato em breve.</p>
+        </div>
+
+        <p class="bio-aviso">Suas informações são usadas somente para retorno de orçamento.</p>
       </div>
+
+      <footer class="bio-rodape">
+        <span>© <span data-bio-ano></span> Casa Sagrado Coração</span>
+        <span>Desenvolvido por Dmove</span>
+      </footer>
+
     </div>
-  </div>
-</section>
-
-<!-- RODAPÉ (idêntico ao de /eventos-religiosos) -->
-<footer class="bio-rodape">
-  <div class="bio-rodape__conteudo">
-    <img class="bio-rodape__logo" src={`${P}/logo-casa-sagrado-coracao-rodape.webp`} alt="Casa Sagrado Coração, Missionárias do SCJ Cabrini" width="640" height="247" loading="lazy" />
-    <p class="bio-rodape__direitos">© <span data-bio-ano></span> Casa Sagrado Coração · Missionárias do SCJ Cabrini. Todos os direitos reservados.</p>
-    <p class="bio-rodape__credito">Desenvolvido por <a class="bio-rodape__dmove" href="https://dmove.com.br" target="_blank" rel="noopener"><img src={`${P}/logo-dmove.webp`} alt="Dmove" width="600" height="134" loading="lazy" /></a></p>
-  </div>
-</footer>
-
+  </main>
 </Base>
 
 <style is:global>
 /* =========================================================
    Bio — Casa Sagrado Coração
+   Estrutura padrão Dmove bio (ref: Farofa)
    ========================================================= */
 :root {
-  --bio-marinho: #0d254d;
+  --bio-destaque:    #c99a45;
+  --bio-destaque2:   #e3bd76;
+  --bio-marinho:     #0d254d;
   --bio-marinho-esc: #07192f;
-  --bio-ouro: #c99a45;
-  --bio-ouro-claro: #e3bd76;
-  --bio-creme: #f8f3eb;
-  --bio-creme-esc: #efe5d4;
-  --bio-texto: #1d2533;
-  --bio-texto-suave: #586273;
+  --bio-creme:       #f8f3eb;
   --bio-fonte-titulo: "Playfair Display", Georgia, serif;
-  --bio-fonte-apoio: "Lora", Georgia, serif;
-  --bio-fonte-texto: "Nunito Sans", system-ui, sans-serif;
-  --bio-trans: cubic-bezier(.22, .61, .36, 1);
+  --bio-fonte-texto:  "Nunito Sans", system-ui, sans-serif;
+  --bio-raio:        8px;
 }
-
-/* ===== SEÇÃO ÚNICA ===== */
-.bio-section {
-  position: relative;
-  min-height: 100svh;
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; padding: 0;
   background: var(--bio-marinho-esc);
-  overflow: hidden;
+  color: var(--bio-creme);
+  font-family: var(--bio-fonte-texto);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100svh;
 }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
 
-.bio-foto {
-  position: absolute;
-  inset: 0;
-}
-.bio-foto img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 40%;
-  animation: bio-zoom 16s var(--bio-trans) both;
-}
-@keyframes bio-zoom { from { transform: scale(1.07); } to { transform: none; } }
-.bio-foto::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(7,25,47,.75) 0%,
-    rgba(7,25,47,.55) 50%,
-    rgba(7,25,47,.82) 100%
-  );
-}
-
-/* Wrapper interno */
-.bio-inner {
-  position: relative; z-index: 2;
-  max-width: 1000px; margin: 0 auto;
-  padding: 0 24px clamp(56px, 8vw, 96px);
+/* ── Layout ─────────────────────────────────────────────── */
+.bio {
+  position: relative; isolation: isolate;
+  min-height: 100svh;
   display: flex; flex-direction: column; align-items: center;
-  gap: clamp(32px, 5vw, 52px);
+  padding: clamp(48px, 7vw, 72px) clamp(20px, 5vw, 40px) clamp(40px, 5vw, 56px);
 }
 
-/* Logo no topo */
-.bio-selo {
-  background: linear-gradient(180deg, #fffaf1 0%, var(--bio-creme-esc) 100%);
-  border-radius: 0 0 28px 28px;
-  padding: 16px 36px 18px;
-  box-shadow: 0 5px 0 -1px var(--bio-ouro), 0 16px 36px rgba(7,25,47,.3);
-  animation: bio-desce 1s var(--bio-trans) .1s both;
-  align-self: center;
+/* ── Fundo fixo ─────────────────────────────────────────── */
+.bio-fundo { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
+.bio-fundo img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%;
+  filter: brightness(.45) saturate(.7);
 }
-.bio-selo img {
-  width: clamp(160px, 30vw, 200px);
-  height: auto; display: block;
-}
-@keyframes bio-desce { from { transform: translateY(-120%); opacity: 0; } to { transform: none; opacity: 1; } }
-
-/* Grade principal */
-.bio-main {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  gap: clamp(36px, 6vw, 72px);
-  align-items: start;
+.bio::before {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(13,37,77,.4) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(7,25,47,.55) 0%, rgba(7,25,47,.2) 40%, rgba(7,25,47,.7) 100%);
 }
 
-/* Lado esquerdo */
-.bio-info {
-  color: var(--bio-creme);
-  display: flex; flex-direction: column;
-  gap: 28px;
-  padding-top: 12px;
-  animation: bio-sobe .9s var(--bio-trans) .45s both;
+/* ── Conteúdo ───────────────────────────────────────────── */
+.bio-conteudo {
+  width: 100%; max-width: 440px;
+  display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 3.5vw, 36px);
 }
 
-.bio-pitch {
-  display: flex; align-items: flex-start; gap: 12px;
-  font: italic 500 clamp(1.05rem, 2vw, 1.25rem)/1.45 var(--bio-fonte-apoio);
-  color: rgba(248,243,235,.92);
+/* ── Cabeçalho ──────────────────────────────────────────── */
+.bio-cabecalho { text-align: center; }
+.bio-logo { width: 160px; height: auto; margin: 0 auto 16px; }
+.bio-tagline {
   margin: 0;
-  text-shadow: 0 1px 8px rgba(7,25,47,.5);
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(248,243,235,.72);
+  max-width: 28ch;
 }
-.bio-pitch .bio-cruz { width: 18px; height: 20px; flex: none; margin-top: 4px; color: var(--bio-ouro-claro); }
 
-.bio-links {
-  display: flex; flex-direction: column; gap: 14px;
-}
+/* ── Links ──────────────────────────────────────────────── */
+.bio-links { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 .bio-link {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 22px; border-radius: 10px;
-  font: 600 .95rem/1 var(--bio-fonte-texto); letter-spacing: .03em;
-  text-decoration: none;
-  background: rgba(248,243,235,.1);
-  color: var(--bio-creme);
-  border: 1px solid rgba(248,243,235,.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background .3s var(--bio-trans), border-color .3s, transform .2s;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--bio-raio);
+  border: 1.5px solid rgba(248,243,235,.18);
+  background: rgba(7,25,47,.45);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: background .2s, border-color .2s, transform .15s;
 }
-.bio-link:hover { background: rgba(248,243,235,.2); border-color: rgba(248,243,235,.5); transform: translateY(-2px); }
-.bio-link--destaque {
-  background: var(--bio-ouro-claro);
-  color: var(--bio-marinho-esc);
-  border-color: transparent;
-  font-weight: 700;
+.bio-link:hover {
+  background: rgba(7,25,47,.65);
+  border-color: rgba(201,154,69,.5);
+  transform: translateY(-2px);
 }
-.bio-link--destaque:hover { background: var(--bio-creme); }
-.bio-link svg { flex: none; opacity: .7; }
-.bio-link--destaque svg { opacity: 1; }
+.bio-link:active { transform: translateY(0); }
+.bio-link-icone {
+  flex: none; width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bio-destaque2); opacity: .85;
+}
+.bio-link-icone svg { width: 20px; height: 20px; display: block; }
+.bio-link-texto { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.bio-link-label { font-weight: 700; font-size: 14px; line-height: 1.2; }
+.bio-link-sub   { font-size: 11px; opacity: .55; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-@keyframes bio-sobe { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-
-/* Lado direito */
+/* ── Formulário ─────────────────────────────────────────── */
 .bio-form-wrap {
-  display: flex; flex-direction: column;
-  gap: 20px;
-  animation: bio-sobe .9s var(--bio-trans) .6s both;
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid rgba(248,243,235,.15);
+  background: rgba(7,25,47,.48);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  padding: clamp(20px, 3vw, 28px);
 }
-
-.bio-form-intro { color: rgba(248,243,235,.9); }
-
-.bio-legenda {
-  display: inline-flex; align-items: center; gap: 10px;
-  font: italic 500 1rem/1.2 var(--bio-fonte-apoio);
-  color: var(--bio-ouro-claro); margin-bottom: 16px;
+.bio-form-titulo {
+  font-family: var(--bio-fonte-titulo);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-style: italic; font-weight: 500;
+  line-height: 1; letter-spacing: .01em;
+  color: var(--bio-creme);
+  margin: 0 0 18px;
 }
-.bio-legenda .bio-cruz { color: var(--bio-ouro-claro); width: 18px; height: 20px; }
-
-.bio-titulo {
-  font: 500 clamp(1.6rem, 2.8vw, 2.2rem)/1.1 var(--bio-fonte-titulo);
-  color: var(--bio-creme); margin: 0 0 14px;
-  letter-spacing: -.01em;
+.bio-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+  align-items: end;
 }
-.bio-form-intro > p {
-  font-size: .95rem;
-  color: rgba(248,243,235,.7);
-  line-height: 1.45; margin: 0;
-}
-
-/* Cruz utilitária */
-.bio-cruz { width: 14px; height: 16px; flex: none; }
-
-/* Grade do formulário */
-.bio-formulario {
-  background: var(--bio-creme);
-  padding: clamp(20px, 3vw, 32px);
-  border-radius: 6px;
-  border-top: 4px solid var(--bio-ouro);
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  box-shadow: 0 24px 56px rgba(7,25,47,.28);
-}
-.bio-campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.bio-campo--inteiro { grid-column: 1 / -1; }
+.bio-campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.bio-campo-full { grid-column: 1 / -1; }
 .bio-campo label {
-  font: 700 .7rem/1.2 var(--bio-fonte-texto);
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--bio-texto-suave);
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em; line-height: 1;
+  color: rgba(248,243,235,.6);
 }
-.bio-campo input, .bio-campo select {
-  width: 100%; min-height: 46px; padding: 11px 13px;
-  font: 400 15px/1.3 var(--bio-fonte-texto); color: var(--bio-texto);
-  background: #fff; border: 1px solid rgba(13,37,77,.2); border-radius: 4px;
-  transition: border-color .25s, box-shadow .25s;
+
+.bio-campo input,
+.bio-campo select,
+.bio-campo textarea {
+  width: 100%; min-width: 0;
+  font-family: var(--bio-fonte-texto); font-size: 15px; font-weight: 600;
+  color: var(--bio-creme);
+  background: rgba(255,255,255,.07);
+  border: 1.5px solid rgba(248,243,235,.18);
+  border-radius: var(--bio-raio);
+  padding: 10px 12px;
+  transition: border-color .2s, box-shadow .2s;
   -webkit-appearance: none; appearance: none;
 }
-.bio-campo select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230d254d' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px;
+.bio-campo input::placeholder { color: rgba(248,243,235,.3); font-weight: 500; }
+.bio-campo input:focus,
+.bio-campo select:focus,
+.bio-campo textarea:focus {
+  outline: none;
+  border-color: var(--bio-destaque);
+  box-shadow: 0 0 0 3px rgba(201,154,69,.2);
 }
-.bio-campo input:focus, .bio-campo select:focus {
-  outline: none; border-color: var(--bio-marinho); box-shadow: 0 0 0 3px rgba(13,37,77,.1);
+.bio-campo select { cursor: pointer; padding-right: 32px; }
+.bio-campo select option { background: #07192f; color: var(--bio-creme); }
+
+.bio-select-wrap { position: relative; }
+.bio-select-seta {
+  position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; pointer-events: none;
+  color: rgba(248,243,235,.45);
 }
-.bio-btn-submit {
-  grid-column: 1 / -1;
+
+.bio-acao { margin-top: 4px; }
+.bio-btn {
+  width: 100%;
   display: flex; align-items: center; justify-content: center;
-  min-height: 50px; padding: 14px 28px;
-  border-radius: 999px; border: 0; cursor: pointer;
-  font: 700 .88rem/1 var(--bio-fonte-texto); letter-spacing: .06em; text-transform: uppercase;
-  background: var(--bio-marinho); color: #f8f3eb;
-  margin-top: 4px;
-  transition: background .3s var(--bio-trans);
+  padding: 13px 20px;
+  border: 0; border-radius: var(--bio-raio);
+  font-family: var(--bio-fonte-texto); font-weight: 700; font-size: 15px;
+  background: var(--bio-destaque); color: var(--bio-marinho-esc);
+  cursor: pointer;
+  transition: background .2s;
 }
-.bio-btn-submit:hover { background: var(--bio-ouro); color: var(--bio-marinho-esc); }
-.bio-btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+.bio-btn:hover { background: var(--bio-destaque2); }
+.bio-btn:disabled { opacity: .6; cursor: not-allowed; }
 
-/* ===== RODAPÉ ===== */
+/* Sucesso */
+.bio-success { display: none; text-align: center; padding: 16px 0 8px; }
+.bio-success.active { display: block; }
+.bio-success-icon {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--bio-destaque); color: var(--bio-marinho-esc);
+  display: grid; place-items: center; margin: 0 auto 12px;
+  font-size: 18px; font-weight: 700;
+}
+.bio-success-titulo {
+  font-family: var(--bio-fonte-titulo); font-style: italic;
+  font-size: 24px; margin: 0 0 6px; color: var(--bio-creme);
+}
+.bio-success-sub { font-size: 14px; opacity: .7; margin: 0; }
+
+.bio-aviso { margin: 12px 0 0; font-size: 11px; line-height: 1.4; color: rgba(248,243,235,.35); text-align: center; }
+
+.field-error { color: #f87171; font-size: .75rem; margin-top: 3px; display: none; }
+.field-error.visible { display: block; }
+
+/* ── Rodapé ─────────────────────────────────────────────── */
 .bio-rodape {
-  background: var(--bio-marinho-esc);
-  color: rgba(248,243,235,.6);
-  padding: 44px 0 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 11px; opacity: .3; text-align: center;
 }
-.bio-rodape__conteudo {
-  max-width: 1100px; margin: 0 auto;
-  padding: 0 24px;
-  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
-}
-.bio-rodape__logo { width: 220px; margin-bottom: 8px; }
-.bio-rodape__direitos, .bio-rodape__credito {
-  margin: 0; font-size: .8rem; font-family: var(--bio-fonte-texto);
-}
-.bio-rodape__credito { display: flex; align-items: center; gap: 10px; }
-.bio-rodape__dmove { display: block; transition: opacity .25s; }
-.bio-rodape__dmove:hover { opacity: .75; }
-.bio-rodape__dmove img { width: 64px; height: auto; }
 
-/* ===== RESPONSIVO ===== */
-@media (max-width: 760px) {
-  .bio-main { grid-template-columns: 1fr; }
-  .bio-info { align-items: flex-start; }
+/* ── Flatpickr: adapta ao tema escuro ───────────────────── */
+.flatpickr-calendar {
+  font-family: var(--bio-fonte-texto) !important;
+  background: #07192f !important;
+  border-color: rgba(248,243,235,.2) !important;
+  border-radius: var(--bio-raio) !important;
+  color: var(--bio-creme) !important;
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,.7) !important;
 }
+.flatpickr-day { color: var(--bio-creme) !important; }
+.flatpickr-day:hover { background: rgba(201,154,69,.25) !important; }
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover { background: var(--bio-destaque) !important; border-color: var(--bio-destaque) !important; }
+.flatpickr-months,
+.flatpickr-weekdays { background: rgba(0,0,0,.3) !important; color: var(--bio-creme) !important; }
+.flatpickr-weekday { color: rgba(248,243,235,.55) !important; }
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg { fill: var(--bio-creme) !important; }
+
+/* ── Responsivo ─────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .bio-formulario { grid-template-columns: 1fr; gap: 12px; padding: 18px 16px; }
-  .bio-campo--inteiro { grid-column: auto; }
-  .bio-rodape__logo { width: 180px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bio-foto img,
-  .bio-selo, .bio-info, .bio-form-wrap { animation: none !important; }
+  .bio-campos { grid-template-columns: 1fr; }
 }
 </style>
 
