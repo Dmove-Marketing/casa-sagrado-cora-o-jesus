@@ -106,6 +106,10 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
           <option>Sem hospedagem</option>
         </select>
       </div>
+      <div class="er-campo er-campo--inteiro">
+        <label for="h-mensagem">Mensagem <span class="er-opcional">(opcional)</span></label>
+        <textarea id="h-mensagem" name="detalhes_adicionais" rows="3" placeholder="Conte-nos um pouco sobre seu evento ou retiro..."></textarea>
+      </div>
       <button class="er-botao er-botao--escuro form-submit" type="button">
         <span class="btn-text">Solicite orçamento</span>
         <span class="btn-loading" style="display:none">Enviando...</span>
@@ -426,6 +430,10 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         <label for="c-participantes"><span class="er-so-desktop">Número de participantes</span><span class="er-so-mobile">Nº de participantes</span></label>
         <input id="c-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
       </div>
+      <div class="er-campo er-campo--inteiro">
+        <label for="c-mensagem">Mensagem <span class="er-opcional">(opcional)</span></label>
+        <textarea id="c-mensagem" name="detalhes_adicionais" rows="3" placeholder="Conte-nos um pouco sobre seu evento ou retiro..."></textarea>
+      </div>
       <button class="er-botao er-botao--escuro form-submit" type="button">
         <span class="btn-text">Solicitar orçamento</span>
         <span class="btn-loading" style="display:none">Enviando...</span>
@@ -570,6 +578,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 .er-campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .er-campo--inteiro { grid-column: 1 / -1; }
 .er-campo label { font: 700 .72rem/1.2 var(--er-fonte-texto); letter-spacing: .06em; text-transform: uppercase; color: var(--er-texto-suave); }
+.er-opcional { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .6; font-size: .85em; }
 .er-campo input, .er-campo select, .er-campo textarea {
   width: 100%; min-height: 48px; padding: 12px 14px;
   font: 400 16px/1.3 var(--er-fonte-texto); color: var(--er-texto);

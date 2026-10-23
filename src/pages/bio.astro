@@ -20,6 +20,12 @@ const links = [
     sublabel: 'Retiros, encontros e formações',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 8h20"/></svg>`,
   },
+  {
+    href:     'https://madrecabrini.org.br/',
+    label:    'Associação Madre Cabrini',
+    sublabel: 'madrecabrini.org.br',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  },
 ];
 ---
 
@@ -410,6 +416,8 @@ a { color: inherit; text-decoration: none; }
 .flatpickr-months,
 .flatpickr-weekdays { background: rgba(0,0,0,.3) !important; color: var(--bio-creme) !important; }
 .flatpickr-weekday { color: rgba(248,243,235,.55) !important; }
+.flatpickr-current-month .cur-month,
+.flatpickr-current-month input.cur-year { color: var(--bio-creme) !important; }
 .flatpickr-prev-month svg,
 .flatpickr-next-month svg { fill: var(--bio-creme) !important; }
 
