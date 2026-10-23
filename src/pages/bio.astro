@@ -134,6 +134,11 @@ const links = [
               <input id="form-field-participantes" name="participantes" type="number" inputmode="numeric" min="1" required />
             </div>
 
+            <div class="bio-campo bio-campo-full">
+              <label for="form-field-detalhes_adicionais">Mensagem <span class="bio-opcional">(opcional)</span></label>
+              <textarea id="form-field-detalhes_adicionais" name="detalhes_adicionais" rows="3" placeholder="Conte-nos um pouco sobre seu evento ou retiro..."></textarea>
+            </div>
+
             <div class="bio-campo bio-campo-full bio-acao">
               <button class="bio-btn form-submit" type="button">
                 <span class="btn-text">Solicitar orçamento</span>
@@ -325,6 +330,8 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 0 0 3px rgba(201,154,69,.2);
 }
 .bio-campo select { cursor: pointer; padding-right: 32px; }
+.bio-campo textarea { resize: none; }
+.bio-opcional { font-weight: 400; opacity: .55; font-size: .85em; }
 .bio-campo select option { background: #07192f; color: var(--bio-creme); }
 
 .bio-select-wrap { position: relative; }
