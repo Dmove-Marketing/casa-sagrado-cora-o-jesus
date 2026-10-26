@@ -121,10 +121,11 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 <!-- 02 · AUTORIDADE -->
 <section class="er-autoridade" aria-label="Por que escolher a Casa">
   <div class="er-container">
-    <ul class="er-atributos er-revela">
+    <ul class="er-atributos">
       <li class="er-atributo"><span class="er-atributo__destaque">Décadas</span><span class="er-atributo__rotulo">de tradição</span></li>
-      <li class="er-atributo"><span class="er-atributo__destaque" data-contar="62">62</span><span class="er-atributo__rotulo">quartos para hospedagem</span></li>
-      <li class="er-atributo"><span class="er-atributo__destaque">Natureza</span><span class="er-atributo__rotulo">e espaços de espiritualidade</span></li>
+      <li class="er-atributo"><span class="er-atributo__destaque">62</span><span class="er-atributo__rotulo">quartos para hospedagem</span></li>
+      <li class="er-atributo"><span class="er-atributo__destaque">Capela</span><span class="er-atributo__rotulo">salas e auditório</span></li>
+      <li class="er-atributo"><span class="er-atributo__destaque">Natureza</span><span class="er-atributo__rotulo">e espiritualidade</span></li>
     </ul>
   </div>
 </section>
@@ -193,8 +194,8 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         <div class="er-percurso__moldura">
           <div class="er-percurso__janela">
             <img class="ativo" src={`${P}/espaco-capela.webp`} style="object-position:50% 50%" alt="Capela da Casa com bancos de madeira, janelas em arco e a imagem do Sagrado Coração ao fundo" width="1600" height="1200" loading="lazy" />
-            <img src={`${P}/espaco-auditorio.webp`} style="object-position:50% 60%" alt="Auditório com cadeiras universitárias organizadas em fileiras" width="1200" height="1600" loading="lazy" />
-            <img src={`${P}/espaco-jardins.webp`} style="object-position:50% 65%" alt="Jardim com fonte, flores e árvores altas sob céu azul" width="1080" height="1350" loading="lazy" />
+            <img src="/images/espaco-salas-auditorio.webp" style="object-position:50% 60%" alt="Auditório com cadeiras universitárias em fileiras e janelas em arco" width="1532" height="1026" loading="lazy" />
+            <img src="/images/espaco-jardins.jpg" style="object-position:50% 50%" alt="Jardim com fonte, flores e árvores altas sob céu azul" width="1080" height="1350" loading="lazy" />
             <img src={`${P}/espaco-estacionamento.webp`} style="object-position:40% 50%" alt="Estacionamento amplo ao lado do prédio da Casa, cercado de árvores" width="1600" height="1066" loading="lazy" />
           </div>
           <div class="er-percurso__base"></div>
@@ -210,14 +211,14 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
           <p>Um ambiente de silêncio e recolhimento para momentos de oração e espiritualidade, conforme a proposta do grupo.</p>
         </li>
         <li class="er-ambiente" data-ambiente="1">
-          <div class="er-ambiente__foto"><img src={`${P}/espaco-auditorio.webp`} style="object-position:50% 60%" alt="" width="1200" height="1600" loading="lazy" /></div>
+          <div class="er-ambiente__foto"><img src="/images/espaco-salas-auditorio.webp" style="object-position:50% 60%" alt="" width="1532" height="1026" loading="lazy" /></div>
           <span class="er-ambiente__numero">II</span>
           <h3>Salas e auditórios</h3>
           <span class="er-ambiente__fio" aria-hidden="true"></span>
           <p>Espaços equipados para palestras, formações, atividades em grupo e encontros que pedem organização e estrutura.</p>
         </li>
         <li class="er-ambiente" data-ambiente="2">
-          <div class="er-ambiente__foto"><img src={`${P}/espaco-jardins.webp`} style="object-position:50% 65%" alt="" width="1080" height="1350" loading="lazy" /></div>
+          <div class="er-ambiente__foto"><img src="/images/espaco-jardins.jpg" style="object-position:50% 50%" alt="" width="1080" height="1350" loading="lazy" /></div>
           <span class="er-ambiente__numero">III</span>
           <h3>Jardins e áreas verdes</h3>
           <span class="er-ambiente__fio" aria-hidden="true"></span>
@@ -231,6 +232,16 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
           <p>Acesso para carros e ônibus, com praticidade para grupos de diferentes tamanhos.</p>
         </li>
       </ol>
+      <div class="er-percurso__legenda" data-percurso-legenda aria-live="polite">
+        <div class="er-percurso__nav">
+          <button class="er-percurso__seta er-percurso__seta--anterior" type="button" data-percurso-anterior aria-label="Ambiente anterior" disabled><svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11 3L5 9l6 6"/></svg></button>
+          <span class="er-ambiente__numero" data-leg-num>I</span>
+          <button class="er-percurso__seta er-percurso__seta--proxima" type="button" data-percurso-proxima aria-label="Próximo ambiente"><svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg></button>
+        </div>
+        <h3 data-leg-tit>Capela</h3>
+        <span class="er-ambiente__fio" aria-hidden="true"></span>
+        <p data-leg-txt>Um ambiente de silêncio e recolhimento para momentos de oração e espiritualidade, conforme a proposta do grupo.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -275,7 +286,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 <section class="er-hospedagem" id="hospedagem">
   <div class="er-container er-hospedagem__grade">
     <div class="er-hospedagem__midia">
-      <div class="er-foto er-revela-foto"><img src={`${P}/hospedagem-quarto-duplo.webp`} alt="Quarto duplo twin com duas camas de madeira, roupa de cama florida e toalhas" width="1600" height="1066" loading="lazy" /></div>
+      <div class="er-foto er-revela-foto"><img src="/images/hospedagem-quarto-individual.jpg" style="object-position:50% 64%" alt="Quarto individual com cama de solteiro, mesa de estudo e janela" width="1020" height="1516" loading="lazy" /></div>
     </div>
     <div class="er-hospedagem__texto">
       <span class="er-legenda er-revela"><svg class="er-cruz"><use href="#cruz"/></svg> Hospedagem</span>
@@ -626,7 +637,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 .er-hero__grade {
   position: relative; z-index: 2; flex: 1;
   display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 6vw, 96px); align-items: center;
-  padding-top: clamp(32px, 5vh, 56px); padding-bottom: clamp(110px, 14vh, 140px);
+  padding-top: clamp(32px, 5vh, 56px); padding-bottom: clamp(40px, 7vh, 80px);
 }
 .er-hero h1 { color: var(--er-creme); font-size: clamp(2.3rem, 3.6vw, 3.4rem); margin-bottom: 22px; text-shadow: 0 2px 24px rgba(7,25,47,.35); }
 .er-hero__paragrafo { max-width: 30em; font-size: clamp(1.05rem, 1.3vw, 1.18rem); line-height: 1.36; color: rgba(248,243,235,.9); margin-bottom: 30px; text-shadow: 0 1px 12px rgba(7,25,47,.4); }
@@ -650,17 +661,19 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 @keyframes er-sobe { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 /* ===== 02 · AUTORIDADE ===== */
-.er-autoridade { position: relative; z-index: 3; margin-top: -84px; }
+.er-autoridade { position: relative; z-index: 3; background: var(--er-creme-escuro); } /* faixa creme de ponta a ponta, colada no hero (igual ao mobile) */
+.er-autoridade .er-container { max-width: none; padding: 0; }
 .er-atributos {
-  list-style: none; margin: 0 auto; padding: clamp(30px, 3.4vw, 44px) clamp(28px, 4vw, 64px);
-  max-width: 1040px;
-  display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; gap: clamp(16px, 3vw, 44px);
-  background: linear-gradient(0deg, #fffaf1 0%, var(--er-creme-escuro) 100%);
-  border-radius: 36px;
-  box-shadow: 0 -6px 0 -1px var(--er-ouro), 0 6px 0 -1px var(--er-ouro), 0 22px 44px rgba(7,25,47,.16);
+  list-style: none; margin: 0 auto; padding: clamp(24px, 2.6vw, 34px) 0;
+  max-width: none;
+  display: grid; grid-template-columns: repeat(4, 1fr); align-items: center; gap: 0;
+  background: var(--er-creme-escuro);
+  border-radius: 0;
+  box-shadow: inset 0 3px 0 var(--er-ouro), inset 0 -3px 0 var(--er-ouro);
   text-align: center;
 }
 .er-atributo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.er-atributo + .er-atributo { border-left: 1px solid var(--er-linha); }
 .er-atributo__destaque { font: italic 500 clamp(2.2rem, 3.4vw, 3rem)/1 var(--er-fonte-titulo); color: var(--er-marinho); }
 .er-atributo__rotulo { font: 600 .8rem/1.35 var(--er-fonte-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--er-texto-suave); max-width: 16em; }
 .er-atributos.er-revela { transform: translateY(60px); }
@@ -670,6 +683,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 .er-atributos .er-atributo:nth-child(1) { transition-delay: .3s; }
 .er-atributos .er-atributo:nth-child(2) { transition-delay: .5s; }
 .er-atributos .er-atributo:nth-child(3) { transition-delay: .7s; }
+.er-atributos .er-atributo:nth-child(4) { transition-delay: .9s; }
 
 /* ===== 03 · EXPERIÊNCIA ===== */
 .er-experiencia { padding: var(--er-secao) 0; background: var(--er-creme); }
@@ -702,9 +716,9 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 .er-espacos h2 { margin: 20px auto 0; }
 .er-percurso { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 120px); }
 .er-percurso__visual { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
-.er-percurso__moldura { position: relative; width: min(100%, 440px); isolation: isolate; }
+.er-percurso__moldura { position: relative; width: min(100%, 440px, calc((100vh - 170px) * .8)); isolation: isolate; }
 .er-percurso__moldura::before { content: ""; position: absolute; inset: -14px -14px 0; border: 1px solid var(--er-ouro); border-bottom: 0; border-radius: 999px 999px 0 0; z-index: -1; }
-.er-percurso__janela { position: relative; aspect-ratio: 4 / 5; max-height: 72vh; margin: 0 auto; border-radius: 999px 999px 0 0; overflow: hidden; background: var(--er-marinho); }
+.er-percurso__janela { position: relative; aspect-ratio: 4 / 5; width: 100%; margin: 0 auto; border-radius: 999px 999px 0 0; overflow: hidden; background: var(--er-marinho); }
 .er-percurso__janela img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity 1s var(--er-transicao), transform 1.8s var(--er-transicao); }
 .er-percurso__janela img.ativo { opacity: 1; transform: none; }
 .er-percurso__base { height: 3px; background: var(--er-ouro); }
@@ -721,6 +735,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 .er-ambiente.ativo .er-ambiente__fio { transform: none; }
 .er-ambiente p { font-size: clamp(1.02rem, 1.25vw, 1.12rem); color: var(--er-texto-suave); max-width: 26em; margin: 0; }
 .er-ambiente__foto { display: none; }
+.er-percurso__legenda, .er-percurso__seta { display: none; }
 .er-espacos__dica { display: none; }
 
 /* ===== 05 · EVENTOS ===== */
@@ -861,19 +876,21 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 @media (max-width: 959px) {
   .er-hero .er-formulario { display: none; }
   .er-hero__foto::before { background: linear-gradient(180deg, rgba(7,25,47,.08) 0%, rgba(7,25,47,0) 30%, rgba(7,25,47,.06) 55%, rgba(7,25,47,.38) 76%, rgba(7,25,47,.55) 100%); }
-  .er-hero__foto img { object-position: 50% 0; animation: none; transform: scale(1.25) translateY(-20%); }
+  .er-hero__foto img { object-position: 50% 0; transform-origin: 50% 0; animation: none; transform: scale(1.25) translateY(-20%); }
   .er-hero__selo { padding: 14px 26px 16px; border-radius: 0 0 26px 26px; }
   .er-hero__selo img { width: 150px; }
   .er-hero__grade { grid-template-columns: 1fr; gap: 0; align-content: end; padding-top: 32px; padding-bottom: 44px; }
   .er-hero__texto { text-align: center; }
   .er-hero h1 { font-size: clamp(2rem, 9vw, 2.5rem); margin: 0 auto 12px; text-shadow: 0 2px 4px rgba(7,25,47,.55), 0 4px 24px rgba(7,25,47,.75); }
   .er-hero__paragrafo { font-size: .92rem; line-height: 1.28; margin: 0 auto 16px; max-width: 24em; }
-  .er-autoridade { margin-top: 0; }
+  .er-autoridade { margin-top: 0; padding-top: 0; }
   .er-autoridade .er-container { padding: 0; }
-  .er-atributos { grid-template-columns: repeat(3, 1fr); gap: 0; max-width: none; padding: 22px 8px; border-radius: 0; background: var(--er-creme-escuro); box-shadow: inset 0 3px 0 var(--er-ouro), inset 0 -3px 0 var(--er-ouro); }
+  .er-atributos { grid-template-columns: repeat(2, 1fr); gap: 0; max-width: none; padding: 6px 8px; border-radius: 0; background: var(--er-creme-escuro); box-shadow: inset 0 3px 0 var(--er-ouro), inset 0 -3px 0 var(--er-ouro); }
   .er-atributos.er-revela, .er-atributos.er-revela .er-atributo { opacity: 1; transform: none; transition: none; }
-  .er-atributo { padding: 0 6px; gap: 6px; }
-  .er-atributo + .er-atributo { border-left: 1px solid var(--er-linha); }
+  .er-atributo { padding: 16px 6px; gap: 6px; }
+  .er-atributo + .er-atributo { border-left: 0; }
+  .er-atributo:nth-child(even) { border-left: 1px solid var(--er-linha); }
+  .er-atributo:nth-child(n+3) { border-top: 1px solid var(--er-linha); }
   .er-atributo__destaque { font-size: clamp(1.25rem, 5.4vw, 2rem); }
   .er-atributo__rotulo { font-size: clamp(.56rem, 2.3vw, .72rem); letter-spacing: .04em; }
   .er-hero__cta { display: flex; width: auto; max-width: 230px; min-height: 38px; padding: 9px 20px; margin: 2px auto 0; font-size: .7rem; }
@@ -895,18 +912,31 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
     scrollbar-width: none; overscroll-behavior-x: contain; list-style: none;
   }
   .er-percurso__lista::-webkit-scrollbar { display: none; }
+  /* cards só com a foto em arco; o texto do ambiente da vez fica embaixo do carrossel e troca ao deslizar */
   .er-ambiente {
-    position: relative; isolation: isolate; flex: 0 0 80%; min-height: 440px; opacity: 1; scroll-snap-align: start;
-    justify-content: flex-end; align-items: center; text-align: center; padding: 0 18px 18px;
+    position: relative; flex: 0 0 80vw; min-height: 0; opacity: 1; scroll-snap-align: center; scroll-snap-stop: always; padding: 0;
     border-radius: 999px 999px 6px 6px; overflow: hidden; border-bottom: 3px solid var(--er-ouro);
   }
-  .er-ambiente__foto { display: block; position: absolute; inset: 0; z-index: -1; }
-  .er-ambiente__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,25,47,0) 48%, rgba(7,25,47,.86) 84%); }
+  .er-ambiente > :not(.er-ambiente__foto) { display: none; }
+  .er-ambiente__foto { display: block; position: relative; width: 100%; aspect-ratio: 4 / 5; }
   .er-ambiente__foto img { width: 100%; height: 100%; object-fit: cover; }
-  .er-ambiente__numero { color: var(--er-ouro-claro); margin-bottom: 4px; font-size: 1.1rem; }
-  .er-ambiente h3 { color: var(--er-creme); font-size: 1.55rem; }
-  .er-ambiente__fio { margin: 8px auto; transform: none; background: var(--er-ouro-claro); }
-  .er-ambiente p { margin: 0 auto; color: rgba(248,243,235,.88); font-size: .82rem; line-height: 1.18; }
+  /* uma foto por vez, centralizada: as vizinhas ficam fora da tela */
+  .er-percurso__lista { width: 100vw; margin-left: calc(50% - 50vw); margin-right: 0; gap: 10vw; scroll-padding: 0; padding-left: 10vw; padding-right: 10vw; }
+  .er-percurso__legenda { display: block; width: 80vw; margin: 0 auto; text-align: center; padding: 18px 0 0; min-height: 150px; }
+  .er-percurso__legenda .er-ambiente__numero { display: block; color: var(--er-ouro); font-size: 1rem; margin-bottom: 4px; }
+  .er-percurso__legenda h3 { font: 500 1.5rem/1.15 var(--er-fonte-titulo); color: var(--er-marinho); }
+  .er-percurso__legenda .er-ambiente__fio { margin: 10px auto; transform: none; }
+  .er-percurso__legenda p { margin: 0 auto; max-width: 19em; font-size: .9rem; line-height: 1.3; color: var(--er-texto-suave); text-wrap: balance; }
+  .er-percurso__legenda h3 { text-wrap: balance; }
+  .er-percurso__legenda.troca h3, .er-percurso__legenda.troca p, .er-percurso__legenda.troca .er-ambiente__numero { opacity: 0; }
+  .er-percurso__legenda h3, .er-percurso__legenda p, .er-percurso__legenda .er-ambiente__numero { transition: opacity .25s; }
+  .er-percurso__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 6px; }
+  .er-percurso__nav .er-ambiente__numero { margin: 0; min-width: 2.2em; }
+  .er-percurso__seta {
+    display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border-radius: 50%; cursor: pointer;
+    background: var(--er-marinho); color: var(--er-creme); border: 0; transition: opacity .3s;
+  }
+  .er-percurso__seta:disabled { opacity: .25; pointer-events: none; }
   .er-espacos__dica { display: block; }
 
   .er-eventos__lista { grid-template-columns: 1fr 1fr; }
@@ -1164,5 +1194,40 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   /* Ano no rodapé */
   var ano = document.querySelector('[data-ano]');
   if (ano) ano.textContent = String(new Date().getFullYear());
+})();
+</script>
+
+<script>
+/* Espaços no mobile: a legenda abaixo do carrossel mostra o ambiente que está no centro */
+(function () {
+  var lista = document.querySelector('.er-percurso__lista'), leg = document.querySelector('[data-percurso-legenda]');
+  if (!lista || !leg) return;
+  var cards = [].slice.call(lista.querySelectorAll('.er-ambiente'));
+  var ant = document.querySelector('[data-percurso-anterior]'), prox = document.querySelector('[data-percurso-proxima]');
+  var num = leg.querySelector('[data-leg-num]'), tit = leg.querySelector('[data-leg-tit]'), txt = leg.querySelector('[data-leg-txt]'), atual = 0;
+  function mostrar(i) {
+    if (i === atual) return;
+    atual = i;
+    leg.classList.add('troca');
+    setTimeout(function () {
+      var c = cards[i];
+      num.textContent = c.querySelector('.er-ambiente__numero').textContent;
+      tit.textContent = c.querySelector('h3').textContent;
+      txt.textContent = c.querySelector('p').textContent;
+      leg.classList.remove('troca');
+    }, 200);
+    if (ant) ant.disabled = i === 0;
+    if (prox) prox.disabled = i === cards.length - 1;
+  }
+  function centro() {
+    var meio = lista.getBoundingClientRect().left + lista.clientWidth / 2, melhor = 0, dist = Infinity;
+    cards.forEach(function (c, k) { var r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - meio); if (d < dist) { dist = d; melhor = k; } });
+    mostrar(melhor);
+  }
+  var agendado = false;
+  lista.addEventListener('scroll', function () { if (!agendado) { agendado = true; requestAnimationFrame(function () { agendado = false; centro(); }); } }, { passive: true });
+  function ir(k) { var c = cards[Math.max(0, Math.min(cards.length - 1, k))]; lista.scrollTo({ left: c.offsetLeft - (lista.clientWidth - c.offsetWidth) / 2, behavior: 'smooth' }); }
+  if (ant) ant.addEventListener('click', function () { ir(atual - 1); });
+  if (prox) prox.addEventListener('click', function () { ir(atual + 1); });
 })();
 </script>
