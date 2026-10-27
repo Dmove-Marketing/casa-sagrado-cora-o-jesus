@@ -44,6 +44,17 @@ export const tipoEventoReligiososOptions: { value: string; label: string }[] = [
   { value: 'Outro',                                label: 'Outro' },
 ];
 
+// Opções específicas para a LP corporativa (/eventos-corporativos) — formatos da seção Eventos
+export const tipoEventoCorporativosOptions: { value: string; label: string }[] = [
+  { value: 'Treinamento de equipe',                label: 'Treinamento de equipe' },
+  { value: 'Workshop ou capacitação',              label: 'Workshop ou capacitação' },
+  { value: 'Convenção corporativa',                label: 'Convenção corporativa' },
+  { value: 'Encontro de integração',               label: 'Encontro de integração' },
+  { value: 'Imersão profissional',                 label: 'Imersão profissional' },
+  { value: 'Dinâmicas e atividades de equipe',     label: 'Dinâmicas e atividades de equipe' },
+  { value: 'Outro',                                label: 'Outro' },
+];
+
 export const trackingParamKeys = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term',
   'utm_content', 'utm_id', 'gclid', 'gbraid', 'wbraid',
