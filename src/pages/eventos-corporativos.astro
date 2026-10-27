@@ -98,6 +98,10 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         <label for="h-convidados">Nº de convidados</label>
         <input id="h-convidados" name="convidados" type="number" inputmode="numeric" min="1" required />
       </div>
+      <div class="er-campo er-campo--inteiro">
+        <label for="h-mensagem">Mensagem <span class="er-opcional">(opcional)</span></label>
+        <textarea id="h-mensagem" name="detalhes_adicionais" rows="3" placeholder="Conte-nos um pouco sobre seu evento..."></textarea>
+      </div>
       <button class="er-botao er-botao--escuro form-submit" type="button">
         <span class="btn-text">Solicitar orçamento</span>
         <span class="btn-loading" style="display:none">Enviando...</span>
@@ -430,6 +434,10 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
       <div class="er-campo">
         <label for="c-convidados"><span class="er-so-desktop">Número de convidados</span><span class="er-so-mobile">Nº de convidados</span></label>
         <input id="c-convidados" name="convidados" type="number" inputmode="numeric" min="1" required />
+      </div>
+      <div class="er-campo er-campo--inteiro">
+        <label for="c-mensagem">Mensagem <span class="er-opcional">(opcional)</span></label>
+        <textarea id="c-mensagem" name="detalhes_adicionais" rows="3" placeholder="Conte-nos um pouco sobre seu evento..."></textarea>
       </div>
       <button class="er-botao er-botao--escuro form-submit" type="button">
         <span class="btn-text">Solicitar orçamento</span>
