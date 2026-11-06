@@ -88,11 +88,24 @@ const submitUrl = config.forms['lead-form']?.webhooks[0] || '';
 
   <!-- Data desejada -->
   <div>
-    <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5" for={`data-${formId}`}>Data desejada</label>
+    <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5" for={`data-${formId}`}>Data inicial</label>
     <input
       id={`data-${formId}`}
       type="text"
       name="data_evento"
+      placeholder="dd/mm/aaaa"
+      data-form-datepicker="true"
+      class="w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/30"
+    />
+  </div>
+
+  <!-- Data final (opcional) — o CRM só tem 1 campo de data: o forms.ts envia a data final dentro da Mensagem -->
+  <div>
+    <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5" for={`data-fim-${formId}`}>Data final <span class="font-normal normal-case tracking-normal opacity-60">(opcional)</span></label>
+    <input
+      id={`data-fim-${formId}`}
+      type="text"
+      name="data_fim"
       placeholder="dd/mm/aaaa"
       data-form-datepicker="true"
       class="w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/30"
@@ -147,6 +160,7 @@ const submitUrl = config.forms['lead-form']?.webhooks[0] || '';
   import flatpickr from 'flatpickr';
   import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
   import 'flatpickr/dist/flatpickr.min.css';
+  import { initMultiDia } from '../scripts/multi-dia';
 
   function initDatepickers() {
     document.querySelectorAll<HTMLInputElement>('[data-form-datepicker]').forEach(el => {
@@ -154,6 +168,7 @@ const submitUrl = config.forms['lead-form']?.webhooks[0] || '';
       el.dataset.flatpickrReady = 'true';
       flatpickr(el, { locale: Portuguese, dateFormat: 'd/m/Y', minDate: 'today', allowInput: true });
     });
+    initMultiDia();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initDatepickers);

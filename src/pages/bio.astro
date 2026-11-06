@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
-import { tipoEventoReligiososOptions, tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
+import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -41,7 +41,6 @@ const links = [
   ogImage={`${P}/hero-vista-aerea-casa.webp`}
   canonical="https://cscjeventos.com.br/bio"
   whatsAppTipoEventoOptions={tipoEventoReligiososOptions}
-  whatsAppMultiDiaTipos={tipoEventoReligiososMultiDia}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -138,13 +137,13 @@ const links = [
             </div>
 
             <div class="bio-campo">
-              <label for="form-field-data_evento" data-label-data>Data do evento</label>
+              <label for="form-field-data_evento">Data inicial</label>
               <input id="form-field-data_evento" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
             </div>
 
-            <div class="bio-campo" data-campo-data-fim hidden>
-              <label for="form-field-data_fim">Data final</label>
-              <input id="form-field-data_fim" name="data_fim" type="text" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
+            <div class="bio-campo">
+              <label for="form-field-data_fim">Data final <span class="bio-opcional">(opcional)</span></label>
+              <input id="form-field-data_fim" name="data_fim" type="text" placeholder="dd/mm/aaaa" data-form-datepicker />
             </div>
 
             <div class="bio-campo">
@@ -452,7 +451,6 @@ a { color: inherit; text-decoration: none; }
 
 <script>
   import { initForms } from '../scripts/forms';
-  import { tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
   import { initMultiDia } from '../scripts/multi-dia';
   import flatpickr from 'flatpickr';
   import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
@@ -465,7 +463,7 @@ a { color: inherit; text-decoration: none; }
       el.dataset.flatpickrReady = 'true';
       flatpickr(el, { locale: Portuguese, dateFormat: 'd/m/Y', minDate: 'today', allowInput: true });
     });
-    initMultiDia(tipoEventoReligiososMultiDia);
+    initMultiDia();
     const ano = document.querySelector('[data-bio-ano]');
     if (ano) ano.textContent = String(new Date().getFullYear());
   }

@@ -55,21 +55,6 @@ export const tipoEventoCorporativosOptions: { value: string; label: string }[] =
   { value: 'Outro',                                label: 'Outro' },
 ];
 
-// Tipos da LP corporativa que costumam durar mais de 1 dia: pedem data inicial + data final.
-// O CRM só aceita uma data, então a data final vai dentro da Mensagem (ver forms.ts / WhatsAppWidget).
-export const tipoEventoCorporativosMultiDia: string[] = [
-  'Convenção corporativa',
-  'Imersão profissional',
-  'Encontro de integração',
-];
-
-// Tipos das LPs religiosas (/eventos-religiosos, /bio) que costumam durar mais de 1 dia.
-export const tipoEventoReligiososMultiDia: string[] = [
-  'Retiro espiritual',
-  'Encontro de jovens',
-  'Encontro de casais ou famílias',
-];
-
 export const trackingParamKeys = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term',
   'utm_content', 'utm_id', 'gclid', 'gbraid', 'wbraid',

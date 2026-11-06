@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
-import { tipoEventoCorporativosOptions, tipoEventoCorporativosMultiDia } from '../scripts/lead-payload';
+import { tipoEventoCorporativosOptions } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -18,7 +18,6 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   canonical="https://cscjeventos.com.br/eventos-corporativos"
   whatsAppShowEmpresaField={true}
   whatsAppTipoEventoOptions={tipoEventoCorporativosOptions}
-  whatsAppMultiDiaTipos={tipoEventoCorporativosMultiDia}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -92,12 +91,12 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         </select>
       </div>
       <div class="er-campo">
-        <label for="h-data" data-label-data>Data do evento</label>
+        <label for="h-data">Data inicial</label>
         <input id="h-data" name="data_evento" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker required />
       </div>
-      <div class="er-campo" data-campo-data-fim hidden>
-        <label for="h-data-fim">Data final</label>
-        <input id="h-data-fim" name="data_fim" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
+      <div class="er-campo">
+        <label for="h-data-fim">Data final <span class="er-opcional">(opcional)</span></label>
+        <input id="h-data-fim" name="data_fim" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker />
       </div>
       <div class="er-campo">
         <label for="h-convidados">Nº de convidados</label>
@@ -433,12 +432,12 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         </select>
       </div>
       <div class="er-campo">
-        <label for="c-data" data-label-data>Data do evento</label>
+        <label for="c-data">Data inicial</label>
         <input id="c-data" name="data_evento" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker required />
       </div>
-      <div class="er-campo" data-campo-data-fim hidden>
-        <label for="c-data-fim">Data final</label>
-        <input id="c-data-fim" name="data_fim" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
+      <div class="er-campo">
+        <label for="c-data-fim">Data final <span class="er-opcional">(opcional)</span></label>
+        <input id="c-data-fim" name="data_fim" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" data-form-datepicker />
       </div>
       <div class="er-campo">
         <label for="c-convidados"><span class="er-so-desktop">Número de convidados</span><span class="er-so-mobile">Nº de convidados</span></label>
@@ -1051,7 +1050,6 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
 
 <script>
   import { initForms } from '../scripts/forms';
-  import { tipoEventoCorporativosMultiDia } from '../scripts/lead-payload';
   import { initMultiDia } from '../scripts/multi-dia';
   import flatpickr from 'flatpickr';
   import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
@@ -1068,7 +1066,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   function boot() {
     initForms();
     initDatepickers();
-    initMultiDia(tipoEventoCorporativosMultiDia);
+    initMultiDia();
   }
 
   if (document.readyState === 'loading') {
