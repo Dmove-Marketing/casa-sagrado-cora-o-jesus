@@ -12,6 +12,8 @@ interface Props {
   showEmpresaField?: boolean;
   /** Sobrescreve as opções de tipo de evento — para LPs com foco religioso */
   tipoEventoOptions?: { value: string; label: string }[];
+  /** Tipos de evento (value) com mais de 1 dia: o popup pergunta também a data final, enviada dentro da Mensagem */
+  multiDiaTipos?: string[];
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   project = config.project_slug || 'landing-page',
   showEmpresaField = false,
   tipoEventoOptions: tipoEventoOptionsProp,
+  multiDiaTipos = [],
 } = Astro.props;
 
 const resolvedTipoOptions = tipoEventoOptionsProp ?? defaultTipoEventoOptions;
@@ -36,7 +39,10 @@ const fields = [
   { key: 'tel', type: 'phone', label: 'Qual é o seu WhatsApp com DDD?', placeholder: '(11) 99999-9999' },
   { key: 'email', type: 'email', label: 'E o seu e-mail?', placeholder: 'seu@email.com' },
   { key: 'tipo_evento', type: 'select', label: tipoEventoLabel, options: resolvedTipoOptions },
-  { key: 'data_evento', type: 'date', label: 'Qual é a data prevista do evento? 📅', placeholder: 'dd/mm/aaaa' },
+  { key: 'data_evento', type: 'date', label: 'Qual é a data prevista do evento? 📅', placeholder: 'dd/mm/aaaa', labelMulti: 'Qual é a data de início do evento? 📅', multiTipos: multiDiaTipos },
+  ...(multiDiaTipos.length
+    ? [{ key: 'data_fim', type: 'date', label: 'E qual é a data de término? 📅', placeholder: 'dd/mm/aaaa', onlyIfTipo: multiDiaTipos }]
+    : []),
   { key: 'convidados', type: 'number', label: 'E quantos convidados, aproximadamente?', placeholder: 'Ex: 150', chips: ['50', '100', '150', '200', '300'] },
 ];
 
@@ -164,6 +170,8 @@ const introMessages = [
     const saved = JSON.parse(sessionStorage.getItem(STATE_KEY) || 'null');
     if (saved && typeof saved.idx === 'number') state = saved;
   } catch (_) {}
+  // rótulo da pergunta: a data vira "data de início" nos tipos de evento com mais de 1 dia
+  const fieldLabel = (f) => (f.labelMulti && f.multiTipos.includes(state.answers.tipo_evento?.value) ? f.labelMulti : f.label);
   const saveState = () => { try { sessionStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (_) {} };
 
   /* ── Balões ─────────────────────────────────── */
@@ -246,6 +254,10 @@ const introMessages = [
       if (d.length < 10) return 'Digite um telefone válido com DDD';
     }
     if (field.type === 'date' && !/^\d{2}\/\d{2}\/\d{4}$/.test(v)) return 'Digite a data no formato dd/mm/aaaa';
+    if (field.key === 'data_fim' && state.answers.data_evento) {
+      const toD = (x) => { const [d, m, y] = x.split('/'); return new Date(+y, +m - 1, +d); };
+      if (toD(v) < toD(state.answers.data_evento.value)) return 'A data final não pode ser antes da data inicial';
+    }
     if (field.type === 'number' && !/^\d+\+?$/.test(v)) return 'Digite um número';
     return null;
   }
@@ -267,10 +279,15 @@ const introMessages = [
   function showInput(field) {
     activeField = field;
     inputbar.hidden = false;
-    inputLbl.textContent = field.label.replace(/\s*[😊🥂📅]\s*/g, '');
+    inputLbl.textContent = fieldLabel(field).replace(/\s*[😊🥂📅]\s*/g, '');
     clearError();
 
     const isDate = field.type === 'date';
+    if (isDate) {
+      const fp = dateInput._flatpickr;
+      const ini = field.key === 'data_fim' ? state.answers.data_evento?.value : '';
+      if (fp) fp.set('minDate', ini || 'today');
+    }
     const isSelect = field.type === 'select';
 
     input.hidden = isDate || isSelect;
@@ -354,7 +371,7 @@ const introMessages = [
     const parts = [`Olá! Sou ${a.nome?.display || ''}`.trim()];
     if (a.empresa) parts[0] += `, da empresa ${a.empresa.display}`;
     parts.push(`Gostaria de um orçamento para ${tipo.toLowerCase()}`);
-    if (a.data_evento) parts[parts.length - 1] += ` no dia ${a.data_evento.display}`;
+    if (a.data_evento) parts[parts.length - 1] += a.data_fim ? ` de ${a.data_evento.display} a ${a.data_fim.display}` : ` no dia ${a.data_evento.display}`;
     if (a.convidados) parts[parts.length - 1] += `, para aproximadamente ${a.convidados.display} convidados`;
     return `${parts.join('. ')}. 🥂`;
   }
@@ -397,6 +414,8 @@ const introMessages = [
       WhatsApp: a.tel?.value || '',
       'E-mail': a.email?.value || '',
       'Data do evento': a.data_evento?.value || '',
+      // CRM só tem 1 campo de data: a data final (eventos de mais de 1 dia) vai na Mensagem
+      ...(a.data_fim ? { Mensagem: `Data final do evento: ${a.data_fim.value}` } : {}),
       Convidados: a.convidados?.value || '',
       'Tipo de evento': a.tipo_evento?.value || '',
       Fonte: pageSource,
@@ -454,7 +473,8 @@ const introMessages = [
     // Replay instantâneo do que já aconteceu nesta sessão (recarregou a página)
     introMessages.forEach((m) => bubble('agent', m, true));
     fields.slice(0, state.idx).forEach((f) => {
-      bubble('agent', f.label, true);
+      if (f.onlyIfTipo && !state.answers[f.key]) return;
+      bubble('agent', fieldLabel(f), true);
       const ans = state.answers[f.key];
       if (ans) bubble('user', ans.display, true);
     });
@@ -475,7 +495,12 @@ const introMessages = [
 
     while (state.idx < fields.length) {
       const field = fields[state.idx];
-      await agentSays(field.label, 600);
+      if (field.onlyIfTipo && !field.onlyIfTipo.includes(state.answers.tipo_evento?.value)) {
+        state.idx += 1;
+        saveState();
+        continue;
+      }
+      await agentSays(fieldLabel(field), 600);
       showInput(field);
       const answer = await new Promise((resolve) => { activeResolve = resolve; });
       bubble('user', answer.display);

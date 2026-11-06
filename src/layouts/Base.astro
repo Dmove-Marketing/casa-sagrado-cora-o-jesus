@@ -33,6 +33,7 @@ interface Props {
   whatsAppMessage?: string;
   whatsAppShowEmpresaField?: boolean;
   whatsAppTipoEventoOptions?: { value: string; label: string }[];
+  whatsAppMultiDiaTipos?: string[];
   hideWhatsApp?: boolean;
 }
 
@@ -50,6 +51,7 @@ const {
   whatsAppMessage,
   whatsAppShowEmpresaField = false,
   whatsAppTipoEventoOptions,
+  whatsAppMultiDiaTipos,
   hideWhatsApp = false,
 } = Astro.props;
 
@@ -127,7 +129,7 @@ const defaultJsonLd = {
     <slot />
 
     <!-- WhatsApp Flutuante -->
-    {!hideWhatsApp && <WhatsAppWidget showEmpresaField={whatsAppShowEmpresaField} tipoEventoOptions={whatsAppTipoEventoOptions} />}
+    {!hideWhatsApp && <WhatsAppWidget showEmpresaField={whatsAppShowEmpresaField} tipoEventoOptions={whatsAppTipoEventoOptions} multiDiaTipos={whatsAppMultiDiaTipos} />}
 
     <!-- Scripts adicionais -->
     <slot name="scripts" />

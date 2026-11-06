@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
-import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
+import { tipoEventoReligiososOptions, tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -41,6 +41,7 @@ const links = [
   ogImage={`${P}/hero-vista-aerea-casa.webp`}
   canonical="https://cscjeventos.com.br/bio"
   whatsAppTipoEventoOptions={tipoEventoReligiososOptions}
+  whatsAppMultiDiaTipos={tipoEventoReligiososMultiDia}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -137,8 +138,13 @@ const links = [
             </div>
 
             <div class="bio-campo">
-              <label for="form-field-data_evento">Data do evento</label>
+              <label for="form-field-data_evento" data-label-data>Data do evento</label>
               <input id="form-field-data_evento" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
+            </div>
+
+            <div class="bio-campo" data-campo-data-fim hidden>
+              <label for="form-field-data_fim">Data final</label>
+              <input id="form-field-data_fim" name="data_fim" type="text" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
             </div>
 
             <div class="bio-campo">
@@ -314,6 +320,7 @@ a { color: inherit; text-decoration: none; }
 }
 .bio-campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .bio-campo-full { grid-column: 1 / -1; }
+.bio-campo[hidden] { display: none; }
 .bio-campo label {
   font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em; line-height: 1;
@@ -445,6 +452,8 @@ a { color: inherit; text-decoration: none; }
 
 <script>
   import { initForms } from '../scripts/forms';
+  import { tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
+  import { initMultiDia } from '../scripts/multi-dia';
   import flatpickr from 'flatpickr';
   import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
   import 'flatpickr/dist/flatpickr.min.css';
@@ -456,6 +465,7 @@ a { color: inherit; text-decoration: none; }
       el.dataset.flatpickrReady = 'true';
       flatpickr(el, { locale: Portuguese, dateFormat: 'd/m/Y', minDate: 'today', allowInput: true });
     });
+    initMultiDia(tipoEventoReligiososMultiDia);
     const ano = document.querySelector('[data-bio-ano]');
     if (ano) ano.textContent = String(new Date().getFullYear());
   }

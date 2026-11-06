@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import config from '../../config.json';
-import { tipoEventoReligiososOptions } from '../scripts/lead-payload';
+import { tipoEventoReligiososOptions, tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
 
 const submitUrl = config.forms['lead-form']?.webhooks[0] ?? '';
 const project   = config.project_slug;
@@ -17,6 +17,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   ogImage={`${P}/hero-vista-aerea-casa.webp`}
   canonical="https://cscjeventos.com.br/eventos-religiosos"
   whatsAppTipoEventoOptions={tipoEventoReligiososOptions}
+  whatsAppMultiDiaTipos={tipoEventoReligiososMultiDia}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -95,8 +96,12 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         <input id="h-pessoas" name="participantes" type="number" inputmode="numeric" min="1" required />
       </div>
       <div class="er-campo">
-        <label for="h-data">Data</label>
+        <label for="h-data" data-label-data>Data</label>
         <input id="h-data" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
+      </div>
+      <div class="er-campo" data-campo-data-fim hidden>
+        <label for="h-data-fim">Data final</label>
+        <input id="h-data-fim" name="data_fim" type="text" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
       </div>
       <div class="er-campo">
         <label for="h-hospedagem">Hospedagem</label>
@@ -434,8 +439,12 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
         </select>
       </div>
       <div class="er-campo">
-        <label for="c-data">Data do evento</label>
+        <label for="c-data" data-label-data>Data do evento</label>
         <input id="c-data" name="data_evento" type="text" placeholder="dd/mm/aaaa" data-form-datepicker required />
+      </div>
+      <div class="er-campo" data-campo-data-fim hidden>
+        <label for="c-data-fim">Data final</label>
+        <input id="c-data-fim" name="data_fim" type="text" placeholder="dd/mm/aaaa" data-form-datepicker disabled />
       </div>
       <div class="er-campo">
         <label for="c-participantes"><span class="er-so-desktop">Número de participantes</span><span class="er-so-mobile">Nº de participantes</span></label>
@@ -989,10 +998,13 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   .er-formulario .er-botao { min-height: 46px; font-size: .8rem; }
   .er-rodape__logo { width: 180px; }
 }
+  .er-campo[hidden] { display: none; }
 </style>
 
 <script>
   import { initForms } from '../scripts/forms';
+  import { tipoEventoReligiososMultiDia } from '../scripts/lead-payload';
+  import { initMultiDia } from '../scripts/multi-dia';
   import flatpickr from 'flatpickr';
   import { Portuguese } from 'flatpickr/dist/l10n/pt.js';
   import 'flatpickr/dist/flatpickr.min.css';
@@ -1008,6 +1020,7 @@ const V = 'https://media.dmove.com.br/clients/sagrado-coracao/videos';
   function boot() {
     initForms();
     initDatepickers();
+    initMultiDia(tipoEventoReligiososMultiDia);
   }
 
   if (document.readyState === 'loading') {

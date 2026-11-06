@@ -209,6 +209,17 @@ export function initForms() {
         rawData[k] = rawData[k] ? `${rawData[k]}, ${val}` : val;
       });
 
+      // Data final (eventos de mais de 1 dia): o CRM só tem 1 campo de data, então vai no início da Mensagem
+      if (rawData['data_fim']) {
+        const linhaFim = `Data final do evento: ${rawData['data_fim']}`;
+        rawData['detalhes_adicionais'] = rawData['detalhes_adicionais']
+          ? `${linhaFim}
+
+${rawData['detalhes_adicionais']}`
+          : linhaFim;
+      }
+      delete rawData['data_fim'];
+
       const trackingRaw = sessionStorage.getItem('dmove_tracking');
       const tracking: Record<string, string> = trackingRaw ? JSON.parse(trackingRaw) : {};
 
