@@ -13,10 +13,9 @@ export const keyMap: Record<string, string> = {
   tipo_evento: 'Tipo de evento',
   'tipo de evento': 'Tipo de evento',
   convidados: 'Convidados',
-  participantes: 'Participantes',
+  participantes: 'Convidados', // o n8n/CRM só lê "Convidados" (LP religiosa chama de participantes)
   empresa: 'Empresa',
-  grupo: 'Igreja/Grupo',
-  hospedagem: 'Hospedagem',
+  grupo: 'Empresa', // o n8n/CRM só lê "Empresa": igreja/grupo vira o nome da organização
   mensagem: 'Mensagem',
   detalhes_adicionais: 'Mensagem',
   'detalhes adicionais': 'Mensagem',
